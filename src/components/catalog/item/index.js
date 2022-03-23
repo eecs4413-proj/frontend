@@ -1,38 +1,52 @@
 import React from "react";
 import { Link, useLocation } from "react-router-dom";
 import {
+  Box,
   Card,
   CardMedia,
   CardContent,
   CardActions,
-  Typography
+  Typography,
+  CircularProgress
 } from "@mui/material";
 
-import tmp from "./tmp.png";
+import useImage from './hooks/useImage'
+
 
 const Item = ({ item }) => {
+  const { image, loading, error } = useImage(item.img)
+
   return (
-    <Card >
-      <CardMedia>
-        <img src={tmp} alt="Temp"/>
-      </CardMedia>
-      <CardContent>
-        <div >
-          <Typography variant="h5" gutterBottom>
-            {item.name}
-          </Typography>
-
-          <Typography variant="h5">
-            ${item.price}
-          </Typography>
-        </div>
-
-        <Typography dangerouslySetInnerHTML={{ __html: item.details}} variant="body2" color="textSecondary" />
-       </CardContent>
-       <CardActions >
-
-       </CardActions>
-    </Card>
+    <>
+      {loading && !error ? (
+        <CircularProgress color="primary"/>
+        ) : (
+          <Card
+            style={{
+              height: "100%"
+            }}
+          >
+            <CardMedia
+              style={{
+                height: 200,
+                width: 200,
+                margin: 'auto'
+              }}
+              image={image}
+              component="img"
+            />
+            <CardContent>
+              <Typography variant="h5" color="primary">{item.name}</Typography>
+              <Typography variant="h6" style={{fontWeight: 'bold'}}>${item.price}</Typography>
+              <Typography variant="title" noWrap>&nbsp;</Typography>
+              <Typography variant="body1">{item.details}</Typography>
+            </CardContent>
+            <CardActions>
+            </CardActions>
+        </Card>
+        )
+      }
+    </>
    );
 };
 

@@ -9,35 +9,7 @@ const App = () => {
   const [items, setItems] = useState([]);
 
   const getItems = () => {
-    const temp = [
-      {
-        "id": 1,
-        "name": "ITEM 1",
-        "type": "TYPE 1",
-        "brand": "BRAND 1",
-        "price": 10,
-        "details": "This is item 1 ...",
-        "img": "./temp-item.png"
-      },
-      {
-        "id": 2,
-        "name": "ITEM 2",
-        "type": "TYPE 2",
-        "brand": "BRAND 1",
-        "price": 100,
-        "details": "This is item 2 ...",
-        "img": "./temp-item.png"
-      },
-      {
-        "id": 3,
-        "name": "ITEM 3",
-        "type": "TYPE 3",
-        "brand": "BRAND 1",
-        "price": 1000,
-        "details": "This is item 3 ...",
-        "img": "./temp-item.png"
-      }
-    ]
+    const temp = require('./items.json');
     
     setItems(temp);
   };
