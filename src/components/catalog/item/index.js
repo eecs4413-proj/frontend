@@ -13,7 +13,7 @@ import {
 import useImage from './hooks/useImage'
 
 
-const Item = ({ item }) => {
+const CatalogItem = ({ item }) => {
   const { image, loading, error } = useImage(item.img)
 
   return (
@@ -50,4 +50,4 @@ const Item = ({ item }) => {
    );
 };
 
-export default Item;
+export default CatalogItem;
