@@ -3,50 +3,13 @@ import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import { Navbar, Catalog} from "./components";
 import RegisterContainer  from "./components/register/RegisterContainer";
 import LoginContainer  from "./components/login/LoginContainer";
+import { Navbar, Catalog } from "./components";
+import Checkout from "./components/checkout/Checkout";
 import './App.css';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import { ListItemSecondaryAction } from "@mui/material";
 
 const App = () => {
-  const [items, setItems] = useState([]);
-
-  const getItems = () => {
-    const temp = [
-      {
-        "id": 1,
-        "name": "ITEM 1",
-        "type": "TYPE 1",
-        "brand": "BRAND 1",
-        "price": 10,
-        "details": "This is item 1 ...",
-        "img": "./temp-item.png"
-      },
-      {
-        "id": 2,
-        "name": "ITEM 2",
-        "type": "TYPE 2",
-        "brand": "BRAND 1",
-        "price": 100,
-        "details": "This is item 2 ...",
-        "img": "./temp-item.png"
-      },
-      {
-        "id": 3,
-        "name": "ITEM 3",
-        "type": "TYPE 3",
-        "brand": "BRAND 1",
-        "price": 1000,
-        "details": "This is item 3 ...",
-        "img": "./temp-item.png"
-      }
-    ]
-    
-    setItems(temp);
-  };
-
-  useEffect(() => {
-    getItems();
-  }, []);
 
 
   return (
@@ -54,9 +17,13 @@ const App = () => {
       <Navbar  />
       <div className="App">
         <Routes>
+
           <Route exact path="/catalog" element={<Catalog products={items}/>}/>
           <Route  exact path ="/register" element={<RegisterContainer />} />
           <Route  exact path ="/login" element={<LoginContainer />} />
+          <Route exact path="/catalog" element={<Catalog />}/>
+          <Route exact path="/checkout" element={<Checkout/>}/>
+
         </Routes>
       </div>
     </Router>
