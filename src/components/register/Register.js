@@ -146,7 +146,7 @@ function Register() {
                 <Row className="mb-3 mx-auto w-75">
                     <Form.Group as={Col} controlId="formGridState">
                         <Form.Label>State</Form.Label>
-                        <Form.Select defaultValue="Ontario" onChange = {(e) => setState(e.target.value)}>
+                        <Form.Select onChange = {(e) => setState(e.target.value)}>
                             <option value = "ON">Ontario</option>
                             <option value = "BC">British Columbia</option>
                             <option value = "PQ">Quebec</option>

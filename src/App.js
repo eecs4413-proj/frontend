@@ -3,7 +3,6 @@ import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import { Navbar, Catalog} from "./components";
 import RegisterContainer  from "./components/register/RegisterContainer";
 import LoginContainer  from "./components/login/LoginContainer";
-import { Navbar, Catalog } from "./components";
 import Checkout from "./components/checkout/Checkout";
 import './App.css';
 import 'bootstrap/dist/css/bootstrap.min.css';
@@ -17,8 +16,6 @@ const App = () => {
       <Navbar  />
       <div className="App">
         <Routes>
-
-          <Route exact path="/catalog" element={<Catalog products={items}/>}/>
           <Route  exact path ="/register" element={<RegisterContainer />} />
           <Route  exact path ="/login" element={<LoginContainer />} />
           <Route exact path="/catalog" element={<Catalog />}/>
