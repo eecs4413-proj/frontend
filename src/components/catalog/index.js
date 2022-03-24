@@ -7,9 +7,10 @@ import {
   Checkbox,
   FormControlLabel
 } from "@mui/material";
-import CatalogItem from './item';
 
+import CatalogItem from './item';
 const items = require('../../items.json');
+
 const types = [];
 const brands = [];
 
