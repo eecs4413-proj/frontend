@@ -3,7 +3,6 @@ import Login from './Login'
 import style from "./LoginStyle.module.css";
 import pic from "./loginImage.jpg";
 
-
 function LoginContainer() {
     return (
         <div className = "loginSection">

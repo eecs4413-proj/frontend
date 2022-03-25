@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { Form, Button, Row, Col } from 'react-bootstrap';
 import style from "./RegisterStyle.module.css";
 import 'bootstrap/dist/css/bootstrap.min.css';
+import { Alert } from 'bootstrap';
 
 function Register() {
     /**
@@ -15,15 +16,15 @@ function Register() {
     const [password2, setPassword2] = useState("");
     const [city, setCity] = useState("");
     const [street, setStreet] = useState("");
-    const [state, setState] = useState("");
+    const [state, setState] = useState("ON");
     const [zip, setZip] = useState("");
     /*
     * password validation message
     */
-    const passwordValidationMessage = ["*The password length must be in length 8-16",
-        "*The password must contain one or more uppercase characters",
-        "*The password must contain one or more lowercase characters",
-        "*The password must contain one or more numeric values"] // handle it
+    // const passwordValidationMessage = ["*The password length must be in length 8-16",
+    //     "*The password must contain one or more uppercase characters",
+    //     "*The password must contain one or more lowercase characters",
+    //     "*The password must contain one or more numeric values"] // handle it
 
     /**
      * Error handle:
@@ -38,51 +39,57 @@ function Register() {
 
 
 
-    function clearingErrorMessage() {
-        if (!control) {
-            setControl(true);
-            setPassword('');
-            setPassword2('');
-            setError('');
-        }
-    }
+    // function clearingPassWord() {
+    //     if (!control) {
+    //         setControl(true);
+    //         setPassword('');
+    //         setPassword2('');
+    //     }
+    // }
 
 
     const onSubmit = (e) => {
         e.preventDefault();
-        // if (password.length < 8 || password.length > 16) {
-        //     setControl(false);
-        //     setError("password length should be in 8-16");
-        // }
-        // else if (!/[A-Z]/.test(password)) {
-        //     setControl(false);
-        //     setError("password length should have at least one uppercase character");
-        // }
-        // else if (!/[a-z]/.test(password)) {
-        //     setControl(false);
-        //     setError("password length should have at least one lowercase character");
-        // }
-        // else if (!/[0-9]/.test(password)) {
-        //     setControl(false);
-        //     setError("password length should have at least one number");
-        // }
-        // else if (password != password2) {
-        //     setControl(false);
-        //     setError("passwords does not match");
-        // }
-        // else {
-
-        // }
-        console.log("lastName: " + lastName + "\n"  +
-        "firstName: " + firstName + "\n" +
-        "email: " + email + "\n"  +
-        "phone: " + phone + "\n"  +
-        "password: " + password + "\n"  +
-        "password2: " + password2 + "\n"  +
-        "city: " + city + "\n"  +
-        "street: " + street + "\n" +
-        "state: " + state + "\n" +
-        "zip: " + zip);
+        if (password.length < 8 || password.length > 16) {
+            setControl(false);
+            alert("password length should be in 8-16");
+            return false;
+        }
+        else if (!/[A-Z]/.test(password)) {
+            setControl(false);
+            alert("password length should have at least one uppercase character");
+            return false;
+        }
+        else if (!/[a-z]/.test(password)) {
+            setControl(false);
+            alert("password length should have at least one lowercase character");
+            return false;
+        }
+        else if (!/[0-9]/.test(password)) {
+            setControl(false);
+            alert("password length should have at least one number");
+            return false;
+        }
+        else if (password != password2) {
+            setControl(false);
+            alert("passwords does not match");
+            return false;
+        }
+        else {
+            console.log("lastName: " + lastName + "\n"  +
+            "firstName: " + firstName + "\n" +
+            "email: " + email + "\n"  +
+            "phone: " + phone + "\n"  +
+            "password: " + password + "\n"  +
+            "password2: " + password2 + "\n"  +
+            "city: " + city + "\n"  +
+            "street: " + street + "\n" +
+            "state: " + state + "\n" +
+            "zip: " + zip);
+            alert("you are registered");
+            return true;
+        }
+        
     }
 
     return (
@@ -119,6 +126,10 @@ function Register() {
                     <Form.Group controlId="formGridPassword" className="w-100">
                         <Form.Label>Password</Form.Label>
                         <Form.Control type="password" onChange = {(e) => setPassword(e.target.value)}/>
+                        <Form.Text id="passwordHelp" muted>
+                            Your password must be 8-16 characters long, must contain uppercase and lowercase letters and numbers, and
+                            must not contain spaces, special characters, or emoji.
+                        </Form.Text>
                     </Form.Group>
                 </Row>
 
@@ -161,7 +172,7 @@ function Register() {
 
                 <div class="text-center mb-3">
                     <div class="mb-3">Already a member?
-                        <a href="">Click here to login!</a>
+                        <a href="./login">Click here to login!</a>
                     </div>
 
                     <Button variant="primary" type="submit" size="lg">
