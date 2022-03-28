@@ -7,26 +7,46 @@ function Login() {
     /**
      * Registration State Variables
      */
-    const [login, setLogin] = useState({email:"",password:""});
-   
-   
+    const [login, setLogin] = useState({ email: "", password: "" });
+    
+    // function onChange(e) {
+    //     e.preventDefault();
+    //     console.log("email: " + login.email + "\n" +
+    //         "password: " + login.password)
+    // }
+
+    function onSubmit(e) {
+        e.preventDefault();
+        if(login.email.length === 0){
+            alert("email can not be empty");
+            return false;
+        }
+
+        if (login.password.length === 0) {
+            alert("password can not be empty");
+            return false;
+        }
+        console.log("email: " + login.email + "\n" +
+            "password: " + login.password)
+    }
+
     return (
-        <div className={style.formContent}>
+        <div className={style.formContent} onSubmit={onSubmit}>
             <Form>
                 <h2 className={style.title}>Login</h2>
 
-                    <Form.Group controlId="Email" className="mb-3 mx-auto w-75 shadow-sm">
-                        <Form.Label>Email</Form.Label>
-                        <Form.Control type="email" />
-                    </Form.Group>
+                <Form.Group controlId="Email" className="mb-3 mx-auto w-75 shadow-sm">
+                    <Form.Label>Email</Form.Label>
+                    <Form.Control type="email" value={login.email} onChange={e => setLogin({ email: e.target.value, password : login.password})} />
+                </Form.Group>
 
-                    <Form.Group controlId="Password" className="mb-3 mx-auto w-75 shadow-sm">
-                        <Form.Label>Password</Form.Label>
-                        <Form.Control type="password" />
-                    </Form.Group>
+                <Form.Group controlId="Password" className="mb-3 mx-auto w-75 shadow-sm">
+                    <Form.Label>Password</Form.Label>
+                    <Form.Control type="password" value={login.password} onChange={e => setLogin({ email: login.email, password : e.target.value})} />
+                </Form.Group>
 
-                <div class="text-center mb-3">
-                    <div class="mb-3">Don't have account yet?
+                <div className="text-center mb-3">
+                    <div className="mb-3">Don't have account yet?
                         <a href="./register">Click here to register!</a>
                     </div>
 

@@ -3,6 +3,7 @@ import { Form, Button, Row, Col } from 'react-bootstrap';
 import style from "./RegisterStyle.module.css";
 import 'bootstrap/dist/css/bootstrap.min.css';
 import { Alert } from 'bootstrap';
+import { FolderZipSharp } from '@mui/icons-material';
 
 function Register() {
     /**
@@ -34,7 +35,7 @@ function Register() {
      * exists in the database or the passwords do not match.
      */
     const [control, setControl] = useState(true);
-    const [errorMsg, setError] = useState("");
+    // const [errorMsg, setError] = useState("");
 
 
 
@@ -50,6 +51,25 @@ function Register() {
 
     const onSubmit = (e) => {
         e.preventDefault();
+        if(firstName.length === 0 || lastName === 0){
+            setControl(false);
+            alert("first name and last name can not be empty");
+            return false;
+        }
+
+
+        if(phone.length === 0){
+            setControl(false);
+            alert("phone can not be empty");
+            return false;
+        }
+
+        if(email.length === 0){
+            setControl(false);
+            alert("email can not be empty");
+            return false;
+        }
+
         if (password.length < 8 || password.length > 16) {
             setControl(false);
             alert("password length should be in 8-16");
@@ -75,7 +95,28 @@ function Register() {
             alert("passwords does not match");
             return false;
         }
-        else {
+
+        if(firstName.length === 0 || lastName === 0){
+            setControl(false);
+            alert("first name or last name can not be empty");
+            return false;
+        }
+
+        if(city.length === 0 || street.length === 0 || zip.length === 0){
+            setControl(false);
+            alert("city, street and zip can not be empty");
+            return false;
+        }
+        
+        if (zip.length != 6) {
+            setControl(false);
+            alert("Zip style incorrect, should be in 6 digits");
+            return false;
+        }
+
+        
+
+        
             console.log("lastName: " + lastName + "\n"  +
             "firstName: " + firstName + "\n" +
             "email: " + email + "\n"  +
@@ -88,7 +129,7 @@ function Register() {
             "zip: " + zip);
             alert("you are registered");
             return true;
-        }
+        
         
     }
 
@@ -99,33 +140,33 @@ function Register() {
                 <Row className="mb-3 mx-auto w-75 ">
                     <Form.Group as={Col} controlId="firstName">
                         <Form.Label>First Name</Form.Label>
-                        <Form.Control type="Text" name = "firstName" onChange = {(e) => setFirstName(e.target.value)}/>
+                        <Form.Control type="Text" name = "firstName" value = {firstName} onChange = {(e) => setFirstName(e.target.value)}/>
                     </Form.Group>
 
                     <Form.Group as={Col} controlId="lastName">
                         <Form.Label>Last Name</Form.Label>
-                        <Form.Control type="Text" name = "lastName" onChange = {(e) => setLastName(e.target.value)}/>
+                        <Form.Control type="Text" name = "lastName" value = {lastName} onChange = {(e) => setLastName(e.target.value)}/>
                     </Form.Group>
                 </Row>
                 
                 <Row className="mb-3 mx-auto w-75">
                     <Form.Group controlId="Phone" className="w-100">
                         <Form.Label>Phone</Form.Label>
-                        <Form.Control type="text" name = "phone" onChange = {(e) => setPhone(e.target.value)}/>
+                        <Form.Control type="text" name = "phone" value = {phone} onChange = {(e) => setPhone(e.target.value)}/>
                     </Form.Group>
                 </Row>
 
                 <Row className="mb-3 mx-auto w-75">
                     <Form.Group controlId="Email" className="w-100">
                         <Form.Label>Email</Form.Label>
-                        <Form.Control type="email" name = "email" onChange = {(e) => setEmail(e.target.value)}/>
+                        <Form.Control type="email" name = "email" value = {email} onChange = {(e) => setEmail(e.target.value)}/>
                     </Form.Group>
                 </Row>
 
                 <Row className="mb-3 mx-auto w-75">
                     <Form.Group controlId="formGridPassword" className="w-100">
                         <Form.Label>Password</Form.Label>
-                        <Form.Control type="password" onChange = {(e) => setPassword(e.target.value)}/>
+                        <Form.Control type="password"  value = {password} onChange = {(e) => setPassword(e.target.value)}/>
                         <Form.Text id="passwordHelp" muted>
                             Your password must be 8-16 characters long, must contain uppercase and lowercase letters and numbers, and
                             must not contain spaces, special characters, or emoji.
@@ -136,28 +177,28 @@ function Register() {
                 <Row className="mb-3 mx-auto w-75">
                     <Form.Group controlId="formGridPassword2" className="w-100">
                         <Form.Label>Confirm Password</Form.Label>
-                        <Form.Control type="password" onChange = {(e) => setPassword2(e.target.value)}/>
+                        <Form.Control type="password"  value = {password2} onChange = {(e) => setPassword2(e.target.value)}/>
                     </Form.Group>
                 </Row>
 
                 <Row className="mb-3 mx-auto w-75">
                     <Form.Group as={Col} controlId="formGridStreet">
                         <Form.Label>Street</Form.Label>
-                        <Form.Control type="text" onChange = {(e) => setStreet(e.target.value)}/>
+                        <Form.Control type="text"  value = {street} onChange = {(e) => setStreet(e.target.value)}/>
                     </Form.Group>
 
 
 
                     <Form.Group as={Col} controlId="formGridCity">
                         <Form.Label>City</Form.Label>
-                        <Form.Control type="text" onChange = {(e) => setCity(e.target.value)}/>
+                        <Form.Control type="text" value = {city} onChange = {(e) => setCity(e.target.value)}/>
                     </Form.Group>
                 </Row>
 
                 <Row className="mb-3 mx-auto w-75">
                     <Form.Group as={Col} controlId="formGridState">
                         <Form.Label>State</Form.Label>
-                        <Form.Select onChange = {(e) => setState(e.target.value)}>
+                        <Form.Select value = {state} onChange = {(e) => setState(e.target.value)}>
                             <option value = "ON">Ontario</option>
                             <option value = "BC">British Columbia</option>
                             <option value = "PQ">Quebec</option>
@@ -166,12 +207,12 @@ function Register() {
 
                     <Form.Group as={Col} controlId="formGridZip">
                         <Form.Label>Zip</Form.Label>
-                        <Form.Control type="text" onChange = {(e) => setZip(e.target.value)}/>
+                        <Form.Control type="text"  value = {zip} onChange = {(e) => setZip(e.target.value)}/>
                     </Form.Group>
                 </Row>
 
-                <div class="text-center mb-3">
-                    <div class="mb-3">Already a member?
+                <div className="text-center mb-3">
+                    <div className="mb-3">Already a member?
                         <a href="./login">Click here to login!</a>
                     </div>
 
