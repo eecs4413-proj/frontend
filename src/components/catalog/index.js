@@ -20,6 +20,7 @@ for (var i = 0; i < items.length; i++) {
 }
 
 const Catalog = () => {
+  const [filteredItems, setFilteredItems] = useState(items);
   const [checkedTypes, setCheckedTypes] = useState(types);
   const [checkedBrands, setCheckedBrands] = useState(brands);
 
@@ -28,8 +29,10 @@ const Catalog = () => {
 
     if (state) {
       setCheckedTypes(types);
+      setFilteredItems(items);
     } else {
       setCheckedTypes([]);
+      setFilteredItems([]);
     }
   };
 
@@ -40,8 +43,18 @@ const Catalog = () => {
 
     if (state) {
       index === -1 && setCheckedTypes(oldArray => [...oldArray, value]);
+      var updatedItems = filteredItems;
+      var newItems = items.filter(i => i.type === value);
+      for (var i = 0; i < newItems.length; i++) {
+        if (!updatedItems.includes(newItems[i])) {
+          updatedItems.push(newItems[i]);
+        }
+      }
+      setFilteredItems(updatedItems);
     } else {
       index !== -1 && setCheckedTypes(checkedTypes.filter(item => item !== value));
+      var updatedItems = filteredItems.filter(i => i.type !== value);
+      setFilteredItems(updatedItems);
     }
   };
 
@@ -50,8 +63,10 @@ const Catalog = () => {
 
     if (state) {
       setCheckedBrands(brands);
+      setFilteredItems(items);
     } else {
       setCheckedBrands([]);
+      setFilteredItems([]);
     }
   };
 
@@ -61,14 +76,25 @@ const Catalog = () => {
     var index = checkedBrands.indexOf(value);
 
     if (state) {
-      index === -1 && setCheckedBrands(oldArray => [...oldArray, value])
+      index === -1 && setCheckedBrands(oldArray => [...oldArray, value]);
+      var updatedItems = filteredItems;
+      var newItems = items.filter(i => i.brand === value);
+      for (var i = 0; i < newItems.length; i++) {
+        if (!updatedItems.includes(newItems[i])) {
+          updatedItems.push(newItems[i]);
+        }
+      }
+      setFilteredItems(updatedItems);
     } else {
       index !== -1 && setCheckedBrands(checkedBrands.filter(item => item !== value));
+      var updatedItems = filteredItems.filter(i => i.brand !== value);
+      setFilteredItems(updatedItems);
     }
   };
 
-  const [filteredTypes, setFilteredTypes] = useState(types);
-  const [filteredBrands, setFilteredBrands] = useState(brands);
+  useEffect(() => {
+    console.log(filteredItems);
+  }, [filteredItems]);
 
   return (
     <Grid container spacing={2} columns={16}>
@@ -136,7 +162,7 @@ const Catalog = () => {
       <Grid item xs={12}>
         <Box m={2} pt={3}>
           <Grid container direction="row"justify="center" spacing={6}>
-              {items.map((product) => (
+              {filteredItems.map((product) => (
                   <Grid item key={product.id} xs={12} sm={6} md={4} >
                       <CatalogItem item={product} />
                   </Grid>
