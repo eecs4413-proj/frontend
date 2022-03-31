@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from "react";
+import axios from 'axios';
 import { Link, useLocation } from "react-router-dom";
 import {
   Box,
@@ -8,8 +9,9 @@ import {
   FormControlLabel
 } from "@mui/material";
 
-import axios from 'axios';
 import CatalogItem from './item';
+
+const baseUrl = 'http://localhost:9000';
 
 const Catalog = () => {
   const [items, setItems] = useState([]);
@@ -18,19 +20,21 @@ const Catalog = () => {
   const [filteredItems, setFilteredItems] = useState([]);
   const [checkedTypes, setCheckedTypes] = useState([]);
   const [checkedBrands, setCheckedBrands] = useState([]);
-
   useEffect(() => {
-    axios.get('http://localhost:9000/api/item').then((response) => {
+    axios({
+      method: 'get',
+      url: baseUrl + '/api/item' 
+    }).then((response) => {
       setItems(response.data);
     });
   }, []);
 
   useEffect(() => {
     const t = [];
-    const b = []
+    const b = [];
     for (var i = 0; i < items.length; i++) {
       t.indexOf(items[i].type) === -1 && t.push(items[i].type);
-      b.indexOf(items[i].brand) === -1 && b.push(items[i].brand);;      
+      b.indexOf(items[i].brand) === -1 && b.push(items[i].brand);
     }
     setTypes(t);
     setCheckedTypes(t);
@@ -175,7 +179,7 @@ const Catalog = () => {
           <Grid container direction="row"justify="center" spacing={6}>
               {filteredItems.map((product) => (
                   <Grid item key={product.itemNo} xs={12} sm={6} md={4} >
-                      <CatalogItem item={product} />
+                    <CatalogItem item={product} />
                   </Grid>
               ))}
           </Grid>      
