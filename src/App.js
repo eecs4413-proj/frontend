@@ -3,7 +3,7 @@ import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import { Navbar, Catalog} from "./components";
 import RegisterContainer  from "./components/register/RegisterContainer";
 import LoginContainer  from "./components/login/LoginContainer";
-import Checkout from "./components/checkout/Checkout";
+import Checkout from "./components/checkout";
 import Cart from "./components/cart/Cart";
 import './App.css';
 import 'bootstrap/dist/css/bootstrap.min.css';
