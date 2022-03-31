@@ -2,8 +2,7 @@ import React, { useState } from 'react';
 import { Form, Button, Row, Col } from 'react-bootstrap';
 import style from "./RegisterStyle.module.css";
 import 'bootstrap/dist/css/bootstrap.min.css';
-import { Alert } from 'bootstrap';
-import { FolderZipSharp } from '@mui/icons-material';
+import axios from 'axios';
 
 function Register() {
     /**
@@ -114,20 +113,29 @@ function Register() {
             return false;
         }
 
-        
+        axios.post("http://localhost:9000/api/user",{
+            email: email,
+            pw: password,
+            fname: firstName,
+            lname: lastName,
+            phone: phone,
+            city: city,
+            street: street,
+            state: state,
+            zip:zip,
+            admin:0
+        }).then((response) => {
+            console.log(response)
+            if(response.status === '200'){
+                alert("You are registered!");   
+            }
+            if(response.status === '500'){
+                alert("database connection problem");
+            }
+        })
 
         
-            console.log("lastName: " + lastName + "\n"  +
-            "firstName: " + firstName + "\n" +
-            "email: " + email + "\n"  +
-            "phone: " + phone + "\n"  +
-            "password: " + password + "\n"  +
-            "password2: " + password2 + "\n"  +
-            "city: " + city + "\n"  +
-            "street: " + street + "\n" +
-            "state: " + state + "\n" +
-            "zip: " + zip);
-            alert("you are registered");
+           
             return true;
         
         

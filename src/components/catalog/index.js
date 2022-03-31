@@ -8,21 +8,36 @@ import {
   FormControlLabel
 } from "@mui/material";
 
+import axios from 'axios';
 import CatalogItem from './item';
-const items = require('../../items.json');
-
-const types = [];
-const brands = [];
-
-for (var i = 0; i < items.length; i++) {
-  types.indexOf(items[i].type) === -1 && types.push(items[i].type);
-  brands.indexOf(items[i].brand) === -1 && brands.push(items[i].brand);
-}
 
 const Catalog = () => {
-  const [filteredItems, setFilteredItems] = useState(items);
-  const [checkedTypes, setCheckedTypes] = useState(types);
-  const [checkedBrands, setCheckedBrands] = useState(brands);
+  const [items, setItems] = useState([]);
+  const [types, setTypes] = useState([]);
+  const [brands, setBrands] = useState([]);
+  const [filteredItems, setFilteredItems] = useState([]);
+  const [checkedTypes, setCheckedTypes] = useState([]);
+  const [checkedBrands, setCheckedBrands] = useState([]);
+
+  useEffect(() => {
+    axios.get('http://localhost:9000/api/item').then((response) => {
+      setItems(response.data);
+    });
+  }, []);
+
+  useEffect(() => {
+    const t = [];
+    const b = []
+    for (var i = 0; i < items.length; i++) {
+      t.indexOf(items[i].type) === -1 && t.push(items[i].type);
+      b.indexOf(items[i].brand) === -1 && b.push(items[i].brand);;      
+    }
+    setTypes(t);
+    setCheckedTypes(t);
+    setBrands(b);
+    setCheckedBrands(b);
+    setFilteredItems(items);
+  }, [items]);
 
   const handleCheckedAllTypes = (event) => {
     var state = event.target.checked;
@@ -92,10 +107,6 @@ const Catalog = () => {
     }
   };
 
-  useEffect(() => {
-    console.log(filteredItems);
-  }, [filteredItems]);
-
   return (
     <Grid container spacing={2} columns={16}>
       <Grid item xs={4}>
@@ -163,7 +174,7 @@ const Catalog = () => {
         <Box m={2} pt={3}>
           <Grid container direction="row"justify="center" spacing={6}>
               {filteredItems.map((product) => (
-                  <Grid item key={product.id} xs={12} sm={6} md={4} >
+                  <Grid item key={product.itemNo} xs={12} sm={6} md={4} >
                       <CatalogItem item={product} />
                   </Grid>
               ))}

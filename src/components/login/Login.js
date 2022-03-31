@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { Form, Button, Row, Col } from 'react-bootstrap';
 import style from "./LoginStyle.module.css";
 import 'bootstrap/dist/css/bootstrap.min.css';
+import axios from "axios";
 
 function Login() {
     /**
@@ -26,6 +27,16 @@ function Login() {
             alert("password can not be empty");
             return false;
         }
+
+        
+        axios.post("http://localhost:9000/api/user/login",{
+            email: login.email,
+            pw: login.password
+        }).then((res) => {
+            console.log(res)
+            alert(res.data.message)
+            localStorage.setItem("Token", res.data.token)
+        })
         console.log("email: " + login.email + "\n" +
             "password: " + login.password)
     }
