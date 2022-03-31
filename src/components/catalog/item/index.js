@@ -14,7 +14,7 @@ import useImage from './hooks/useImage'
 
 
 const CatalogItem = ({ item }) => {
-  const { image, loading, error } = useImage(item.img)
+  const { image, loading, error } = useImage(item.imgsrc)
 
   return (
     <>
