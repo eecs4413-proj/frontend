@@ -48,7 +48,16 @@ function Register() {
     // }
 
 
-    const onSubmit = (e) => {
+    // axios({
+    //     method: 'post',
+    //     url: '/user/12345',
+    //     data: {
+    //       firstName: 'Fred',
+    //       lastName: 'Flintstone'
+    //     }
+    //   });
+
+    const onSubmit = async (e) => {
         e.preventDefault();
         if(firstName.length === 0 || lastName === 0){
             setControl(false);
@@ -113,26 +122,39 @@ function Register() {
             return false;
         }
 
-        axios.post("http://localhost:9000/api/user",{
-            email: email,
-            pw: password,
-            fname: firstName,
-            lname: lastName,
-            phone: phone,
-            city: city,
-            street: street,
-            state: state,
-            zip:zip,
-            admin:0
-        }).then((response) => {
-            console.log(response)
-            if(response.status === '200'){
+
+        const config = {
+            method: 'post',
+            url: "http://localhost:9000/api/user",
+            data: {
+                email: email, 
+                pw : password, 
+                fname: firstName, 
+                lname: lastName, 
+                admin: 0
+            }
+        }
+
+        const config2 = {
+            method: 'post',
+            url: "http://localhost:9000/api/user/address",
+            data: {
+                street : street, province : state, zip : zip, phone : phone, userEmail: email
+            }
+        }
+    
+        const res1 = await axios(config)
+        const res2 = await axios(config2) 
+
+        console.log(res1)
+        console.log(res2)
+            if(res1.status === '200' && res2.status === '200'){
                 alert("You are registered!");   
             }
-            if(response.status === '500'){
+            if(res1.status === '500' || res2.status === '500'){
                 alert("database connection problem");
             }
-        })
+      
 
         
            
