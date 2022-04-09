@@ -38,8 +38,6 @@ function Login() {
             localStorage.setItem("Token", res.data.token)
             localStorage.setItem("UserID", res.data.email)
         })
-        console.log("email: " + login.email + "\n" +
-            "password: " + login.password)
     }
 
     return (
