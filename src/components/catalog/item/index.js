@@ -59,7 +59,7 @@ const CatalogItem = ({ item, user }) => {
   }, []);
 
   const handleAddToCart = (event) => {
-    axios({
+    // axios({
     //   method: 'post',
     //   url: baseUrl + '/api/shoppingcart',
     //   headers: {}, 
