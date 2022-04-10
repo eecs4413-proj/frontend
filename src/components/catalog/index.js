@@ -20,6 +20,7 @@ const Catalog = () => {
   const [filteredItems, setFilteredItems] = useState([]);
   const [checkedTypes, setCheckedTypes] = useState([]);
   const [checkedBrands, setCheckedBrands] = useState([]);
+  
   useEffect(() => {
     axios({
       method: 'get',

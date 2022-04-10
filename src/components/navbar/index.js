@@ -1,82 +1,109 @@
-import React from "react";
-import { Link, useLocation } from "react-router-dom";
+import React, { useState, useEffect } from "react";
+import axios from "axios";
+import { useNavigate } from "react-router-dom";
+import MuiAppBar from '@mui/material/AppBar';
 import {
-  AppBar,
   Box,
   Toolbar,
-  IconButton,
-  Typography,
-  Container,
-  Badge
+  Link
 } from "@mui/material";
-import ShoppingCartIcon from '@mui/icons-material/ShoppingCart';
-import LogoutIcon from '@mui/icons-material/Logout';
-import LoginIcon from '@mui/icons-material/Login';
 
-import logo from "./assets/logo192.png";
+const baseUrl = 'http://localhost:9000';
 
 const Navbar = () => {
-  const location = useLocation();
+  const navigate = useNavigate();
+
+  const userId = localStorage.getItem("UserID");
+  const token = localStorage.getItem("Token");
+  const [validUser, setValidUser] = useState(false);
+
+  useEffect(() => {
+    if (userId && token) {
+      axios({
+        method: 'get',
+        url: baseUrl + '/api/user/' + userId,
+        headers: { "Authorization": "Bearer " + token},  
+      }).then((response) => {
+        console.log(response);
+        if(response.status === 200) {
+          setValidUser(true);
+        }
+      });
+    }
+  }, []);
+
+  const handleSignOut = (event) => {
+    localStorage.removeItem("UserID");
+    localStorage.removeItem("Token");
+    setValidUser(false);
+    navigate("/");
+  }
 
   return (
-    <AppBar position="static" >
-      <Container maxWidth="xl">
-        <Toolbar >
-          <Box sx={{ flexGrow: 1, display: 'flex'}}>
-            <Typography
-              component={Link}
-              to="/"
-              variant="h6"
-              sx={{ mr: 2, display: 'flex' }}
-            >
-              <img
-                src={logo}
-                alt="Convenience Store"
-                className="logo"
-                height="50px"
-              />
-            </Typography>
-          </Box>
-
-          <Box sx={{ flexGrow: 0 }}>
-            {location.pathname !== "/" ? (
+    <div>
+      <MuiAppBar elevation={0} position="fixed" >
+        <Toolbar sx={{ justifyContent: 'space-between' }}>
+          <Box sx={{ flex: 1 }} />
+          <Link
+            variant="h4"
+            underline="none"
+            color="white"
+            href="/"
+            sx={{ fontSize: 24 }}
+          >
+            {'Convenience Store'}
+          </Link>
+          <Box sx={{ flex: 1, display: 'flex', justifyContent: 'flex-end' }}>
+            {validUser ? (
               <div>
-                <Box sx={{ flexGrow: 1 }}>
-                <IconButton
-                      component={Link}
-                      to="/cart"
-                      aria-label="Show items in my cart"
-                      color="secondary"
-                    >
-                      <Badge><ShoppingCartIcon /></Badge>
-                    </IconButton>
-
-                    <IconButton
-                      component={Link}
-                      to="/"
-                      aria-label="Logout"
-                      color="secondary"
-                    >
-                      <Badge><LogoutIcon /></Badge>
-                    </IconButton>
-                </Box>
-              </div>
-              ) : 
-              <div>
-                <IconButton
-                  component={Link}
-                  to="/catalog"
-                  aria-label="Login"
-                  color="secondary"
+                <Link
+                  variant="h6"
+                  underline="none"
+                  color="white"
+                  href="/cart"
+                  sx={{ fontSize: 16, ml: 3 }}
                 >
-                  <Badge><LoginIcon /></Badge></IconButton>
+                  {'Cart'}
+                </Link>
+                <Link
+                  variant="h6"
+                  underline="none"
+                  color="secondary"
+                  href="/"
+                  onClick={handleSignOut}
+                  sx={{ fontSize: 16, ml: 3 }}
+                >
+                  {'Sign Out'}
+                </Link>
               </div>
+            ) :
+            <div>
+              <Link
+                variant="h6"
+                underline="none"
+                color="white"
+                href="/login"
+                sx={{ fontSize: 16, ml: 3 }}
+              >
+                {'Sign In'}
+              </Link>
+              <Link
+                variant="h6"
+                underline="none"
+                color="secondary"
+                href="/register"
+                sx={{ fontSize: 16, ml: 3 }}
+              >
+                {'Sign Up'}
+              </Link>
+             </div>
             }
           </Box>
         </Toolbar>
-      </Container>
-    </AppBar>
+      </MuiAppBar>
+      <Toolbar />
+    </div>
   );
-};
+}
 
 export default Navbar;

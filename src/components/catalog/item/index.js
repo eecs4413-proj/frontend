@@ -39,7 +39,9 @@ const modalStyle = {
   p: 4,
 };
 
-const CatalogItem = ({ item, user }) => {
+const CatalogItem = ({ item }) => {
+  const userId = localStorage.getItem("UserID");
+  const token = localStorage.getItem("Token");
 
   const { image, loading, error } = useImage(item.imgsrc)
 
@@ -59,18 +61,32 @@ const CatalogItem = ({ item, user }) => {
   }, []);
 
   const handleAddToCart = (event) => {
-    // axios({
-    //   method: 'post',
-    //   url: baseUrl + '/api/shoppingcart',
-    //   headers: {}, 
-    //   data: {
-    //     userID: 1,
-    //     itemID: item.itemNo,
-    //     quantity: itemQuantity
-    //   }
-    // });
+    if(itemQuantity === 0) {
+      alert("Item quantity cannot be zero!");
+      return;
+    }
 
-    console.log("user: 1, item: " + item.itemNo + ", quantity: " + itemQuantity);
+    if (userId && token) {
+      axios({
+        method: 'post',
+        url: baseUrl + '/api/shoppingcart',
+        headers: { "Authorization": "Bearer " + token},
+        data: {
+          userEmail: userId,
+          itemNo: item.itemNo,
+          quantity: itemQuantity
+        }
+      }).then((response) => {
+        console.log(response);
+        if(response.status === 200) {
+          console.log("Item added to cart!");
+        }
+      }).catch((error) => {
+        alert("Request rejected, not authorized!");
+      });
+    } else {
+      alert("You must be signed in to purchase items!");
+    }
   };
 
   const handleReviewModal = (event) => {
@@ -90,16 +106,28 @@ const CatalogItem = ({ item, user }) => {
       alert("Please enter a valid comment!");
       return;
     }
-    axios({
-      method: 'post',
-      url: baseUrl + '/api/item/review',
-      headers: {}, 
-      data: {
-        itemNo: item.itemNo,
-        rate: reviewStars,
-        description: reviewComment
-      }
-    });
+
+    if (userId && token) {
+      axios({
+        method: 'post',
+        url: baseUrl + '/api/item/review',
+        headers: { "Authorization": "Bearer " + token},
+        data: {
+          itemNo: item.itemNo,
+          rate: reviewStars,
+          description: reviewComment
+        }
+      }).then((response) => {
+        console.log(response);
+        if(response.status === 200) {
+          console.log("Review submitted!");
+        }
+      }).catch((error) => {
+        alert("Your review was rejected, not authorized!");
+      });
+    } else {
+      alert("You must be signed in to review items!");
+    }
   };
 
   const handleRefreshReview = (event) => {
@@ -200,12 +228,12 @@ const CatalogItem = ({ item, user }) => {
               >
                 <Box sx={modalStyle}>
                   <Grid container item xs={12}>
-                    <Grid item xs={10}>
-                      <Typography variant="h5">
-                        Customer Reviews
+                    <Grid item xs={11}>
+                      <Typography variant="h6">
+                        Review - {item.name}
                       </Typography>
                     </Grid>
-                    <Grid item xs={2}>
+                    <Grid item xs={1}>
                       <RefreshIcon onClick={handleRefreshReview} />
                     </Grid>
                   </Grid>
