@@ -16,7 +16,7 @@ import {
 import useImage from '../hooks/useImage'
 
 
-const CartItem = ({ item }) => {
+const CartItem = ({ item, handleDelete }) => {
   const { image, loading, error } = useImage(item.img)
 
 
@@ -32,7 +32,7 @@ const CartItem = ({ item }) => {
             }}
           >
             <IconButton style={{ marginLeft: "85%" }} aria-label="delete" size="large">
-            <DeleteIcon fontSize="inherit" />
+            <DeleteIcon onClick = {()=>{handleDelete(item.itemNo)}} fontSize="inherit" />
             </IconButton>
 
             <CardMedia            

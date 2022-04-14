@@ -1,31 +1,115 @@
 import React from "react";
-import { TextField, Typography, Grid, Box, Stack, Container } from "@mui/material";
+import {
+  TextField,
+  Typography,
+  Grid,
+  Box,
+  Stack,
+  Container,
+} from "@mui/material";
+import axios from "axios";
 
-import CartItem from "../catalog/item/cart_item";
-const items = require("../../items.json");
+import CartItem from "./cart_item";
 
-const cart = () => {
+const Cart = () => {
+  const [items, setItems] = React.useState([]);
+  const userId = localStorage.getItem("UserID");
+  const token = localStorage.getItem("Token");
+  const [shoppingCart, setShoppingCart] = React.useState();
+
+  React.useEffect(async ()=>{
+   
+    const itemData = await fetchItems();
+    const cartData = await fetchCart();
+
+    handleFilter(itemData, cartData);
+    
+  }, []);
+
+  const handleFilter = (itemData, cartData) =>{
+
+    console.log({itemData, cartData})
+     var newItems =[];
+      var index1 = Number(cartData.length);
+      var index2 = Number(itemData.length)
+  
+      for(var i =0; i< index1; i++)
+      {
+        for(var j =0; j<index2 ; j++)
+        {
+          if(cartData[i].itemNo === itemData[j].itemNo)
+          newItems.push(itemData[j])
+        }
+      }
+
+      setItems(newItems)
+      console.log({newItems})
+  }
+
+  const handleDelete = async (e) =>{
+
+    console.log(e)
+    //todo
+    // axios.post(
+    //   'http://localhost:9000/api/item'
+    // )
+  }
+
+     const fetchItems= async ()=>{
+     return  axios({
+        method: 'get',
+        url: 'http://localhost:9000/api/item'
+      }).then((response) => {
+        return response.data ;
+        });
+    }
+
+    const fetchCart = async  () =>{
+     return  axios({
+        method: 'get',
+        url: 'http://localhost:9000/api/shoppingcart/'+userId
+      }).then((response) => {
+         return response.data ;
+
+      });
+    }
+    
+    const updateCart = () =>{
+
+
+    }
+
+    
   return (
     <>
-    <Container  sx={{ width: '30%' }}>
-      
-      <Typography style ={{textAlign: "center"}} variant="h3"> My Cart </Typography><br/>
+      <Container sx={{ width: "30%" }}>
+        <Typography style={{ textAlign: "center" }} variant="h3">
+          {" "}
+          My Cart{" "}
+        </Typography>
+        <br />
 
-      <Stack container direction="column" justify="center" spacing={6}>
-        {items.map((product) => (
-          <Stack item key={product.id} xs={12} sm={6} md={4} direction="column">
-            <CartItem item={product} />
-           
-          </Stack>
-        ))}
-      </Stack>
-      <br />
-      <div style={{ display: "flex" }}>
-        <button style={{ marginLeft: "auto" }}>checkout</button>
-      </div>
-      <br/>
+        <Stack container direction="column" justify="center" spacing={6}>
+          {items.map((product) => (
+            <Stack
+              item
+              key={product.itemNo}
+              xs={12}
+              sm={6}
+              md={4}
+              direction="column"
+            >
+              <CartItem item={product} handleDelete ={handleDelete} />
+            </Stack>
+          ))}
+        </Stack>
+        <br />
+        <div style={{ display: "flex" }}>
+          <button style={{ marginLeft: "auto" }}>checkout</button>
+        </div>
+        <br />
       </Container>
     </>
   );
 };
-export default cart;
+export default Cart;
