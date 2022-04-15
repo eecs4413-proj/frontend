@@ -6,12 +6,36 @@ import LoginContainer  from "./components/login/LoginContainer";
 import Checkout from "./components/checkout";
 import Cart from "./components/cart/Cart";
 import OrderReview from "./components/orderReview";
+import AdminEventTable from "./components/admin/adminEventTable";
+import AdminOrdersTable from "./components/admin/adminOrdersTable";
 import './App.css';
 import 'bootstrap/dist/css/bootstrap.min.css';
+import AdminContainer from "./components/admin/adminContainer"
+import axios from "axios";
+import ProtectedRoute from "./ProtectedRoute";
+
+
 import { ListItemSecondaryAction } from "@mui/material";
 
 const App = () => {
+//   const userId = localStorage.getItem("UserID");
+//   const token = localStorage.getItem("Token");
 
+
+//   function isAuthLogin(){
+//     if (userId && token) {
+//         axios({
+//           method: 'get',
+//           url: 'http://localhost:9000/api/user/' + userId,
+//           headers: { "Authorization": "Bearer " + token},  
+//         }).then((response) => {
+//           console.log(response);
+//           if(response.status === 200) {
+//             return true;
+//           }
+//         });
+//       }
+// }
 
   return (
     <Router>
@@ -22,8 +46,12 @@ const App = () => {
           <Route exact path ="/login" element={<LoginContainer />} />
           <Route exact path="/" element={<Catalog />}/>
           <Route exact path="/checkout" element={<Checkout/>}/>
+           {/* <ProtectedRoute path = "/checkout" component = {Checkout} isAuth = {isAuthLogin} /> */}
           <Route exact path="/cart" element={<Cart/>}/>
           <Route exact path="/review" element={<OrderReview/>}/>
+          <Route exact path="/admin" element={<AdminContainer/>}/>
+          <Route exact path="/adminEventTable" element={<AdminEventTable/>}/>
+          <Route exact path="/adminOrdersTable" element={<AdminOrdersTable/>}/>
         </Routes>
       </div>
     </Router>

@@ -3,6 +3,7 @@ import { Form, Button, Row, Col } from 'react-bootstrap';
 import style from "./RegisterStyle.module.css";
 import 'bootstrap/dist/css/bootstrap.min.css';
 import axios from 'axios';
+import {useNavigate} from "react-router-dom";
 
 function Register() {
     /**
@@ -34,28 +35,9 @@ function Register() {
      * exists in the database or the passwords do not match.
      */
     const [control, setControl] = useState(true);
-    // const [errorMsg, setError] = useState("");
+    const navigate = useNavigate();
 
 
-
-
-    // function clearingPassWord() {
-    //     if (!control) {
-    //         setControl(true);
-    //         setPassword('');
-    //         setPassword2('');
-    //     }
-    // }
-
-
-    // axios({
-    //     method: 'post',
-    //     url: '/user/12345',
-    //     data: {
-    //       firstName: 'Fred',
-    //       lastName: 'Flintstone'
-    //     }
-    //   });
 
     const onSubmit = async (e) => {
         e.preventDefault();
@@ -143,24 +125,26 @@ function Register() {
             }
         }
 
-        const res1 = await axios(config)
-        const res2 = await axios(config2)
+        const res1 = await axios(config).catch((error) => {
+            alert("the user ID already exist");
+          });
+        const res2 = await axios(config2);
 
-        console.log(res1)
-        console.log(res2)
-        if (res1.status === '200' && res2.status === '200') {
+        console.log(res1);
+        console.log(res2);
+        console.log(res1.data.success);
+        console.log(res2.data.success);
+
+        if (res1.data.success === 1 && res2.data.success === 1) {
             alert("You are registered!");
+            navigate("/login"); 
         }
+
         if (res1.status === '500' || res2.status === '500') {
             alert("database connection problem");
         }
 
-
-
-
         return true;
-
-
     }
 
     return (

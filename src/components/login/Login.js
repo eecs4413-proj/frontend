@@ -3,13 +3,14 @@ import { Form, Button, Row, Col } from 'react-bootstrap';
 import style from "./LoginStyle.module.css";
 import 'bootstrap/dist/css/bootstrap.min.css';
 import axios from "axios";
+import {useNavigate} from "react-router-dom";
 
 function Login() {
     /**
      * Registration State Variables
      */
     const [login, setLogin] = useState({ email: "", password: "" });
-    
+    const navigate = useNavigate();
     // function onChange(e) {
     //     e.preventDefault();
     //     console.log("email: " + login.email + "\n" +
@@ -32,12 +33,16 @@ function Login() {
         axios.post("http://localhost:9000/api/user/login",{
             email: login.email,
             pw: login.password
-        }).then((res) => {
-            console.log(res)
-            alert(res.data.message)
-            localStorage.setItem("Token", res.data.token)
-            localStorage.setItem("UserID", login.email)
+        }).then((res) => {  if(res.data.success === 1){
+            alert(res.data.message);
+            localStorage.setItem("Token", res.data.token);
+            localStorage.setItem("UserID", login.email);
+            navigate("/"); 
+            }
         })
+        .catch((error) => {
+            alert("invalid email or password");
+          });
     }
 
     return (
