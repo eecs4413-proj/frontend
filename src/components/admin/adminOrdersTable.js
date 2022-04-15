@@ -36,6 +36,8 @@ export default function AdminOrdersTable() {
   const [record, setRecord] = useState([]);
   const [result, setResult] = useState([]);
   // var result = [];
+  const userId = localStorage.getItem("UserID");
+  const token = localStorage.getItem("Token");
 
   useEffect(()=>{ 
     getData();
@@ -57,7 +59,6 @@ export default function AdminOrdersTable() {
       alert("Error while fetching ordered items");
     })
   }
-
 
   function createResult(){
     var count1 = 0;

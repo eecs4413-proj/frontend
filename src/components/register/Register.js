@@ -124,16 +124,11 @@ function Register() {
                 street: street, province: state, zip: zip, phone: phone, userEmail: email
             }
         }
+        
+        
+        const res1 = await axios(config);
 
-        const res1 = await axios(config).catch((error) => {
-            alert("the user ID already exist");
-          });
         const res2 = await axios(config2);
-
-        console.log(res1);
-        console.log(res2);
-        console.log(res1.data.success);
-        console.log(res2.data.success);
 
         if (res1.data.success === 1 && res2.data.success === 1) {
             alert("You are registered!");
