@@ -40,7 +40,7 @@ export default function AdminOrdersTable() {
   }, []);
 
 
-  async function getData(){
+  function getData(){
     var res = axios.get(`http://localhost:9000/api/admin/ordered`)
     .then(res => {
       const records = res.data;
@@ -109,9 +109,9 @@ export default function AdminOrdersTable() {
           {result.map((row) => (
             <StyledTableRow>
               <StyledTableCell component="th" scope="row">
-                {row.ipAddress}
+                {row.count}
               </StyledTableCell>
-              <StyledTableCell>{row.eventType}</StyledTableCell>
+              <StyledTableCell>{row.month}</StyledTableCell>
             </StyledTableRow>
           ))}
         </TableBody>
