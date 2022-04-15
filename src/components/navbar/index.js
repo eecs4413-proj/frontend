@@ -1,6 +1,4 @@
 import React, { useState, useEffect } from "react";
-import axios from "axios";
-import { useNavigate } from "react-router-dom";
 import MuiAppBar from '@mui/material/AppBar';
 import {
   Box,
@@ -8,35 +6,13 @@ import {
   Link
 } from "@mui/material";
 
-const baseUrl = 'http://localhost:9000';
-
 const Navbar = () => {
-  const navigate = useNavigate();
-
   const userId = localStorage.getItem("UserID");
   const token = localStorage.getItem("Token");
-  const [validUser, setValidUser] = useState(false);
-
-  useEffect(() => {
-    if (userId && token) {
-      axios({
-        method: 'get',
-        url: baseUrl + '/api/user/' + userId,
-        headers: { "Authorization": "Bearer " + token},  
-      }).then((response) => {
-        console.log(response);
-        if(response.status === 200) {
-          setValidUser(true);
-        }
-      });
-    }
-  }, []);
 
   const handleSignOut = (event) => {
     localStorage.removeItem("UserID");
     localStorage.removeItem("Token");
-    setValidUser(false);
-    navigate("/");
   }
 
   return (
@@ -54,7 +30,7 @@ const Navbar = () => {
             {'Convenience Store'}
           </Link>
           <Box sx={{ flex: 1, display: 'flex', justifyContent: 'flex-end' }}>
-            {validUser ? (
+            {userId && token ? (
               <div>
                 <Link
                   variant="h6"

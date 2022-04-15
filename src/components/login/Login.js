@@ -36,7 +36,7 @@ function Login() {
             console.log(res)
             alert(res.data.message)
             localStorage.setItem("Token", res.data.token)
-            localStorage.setItem("UserID", res.data.email)
+            localStorage.setItem("UserID", login.email)
         })
     }
 
