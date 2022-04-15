@@ -101,7 +101,6 @@ export default function AdminOrdersTable() {
      change.push({"count":count10,"month":"October"});
      change.push({"count":count11,"month":"November"});
      change.push({"count":count12,"month":"December"});
-    console.table(change);
      setResult(change);
   } 
 

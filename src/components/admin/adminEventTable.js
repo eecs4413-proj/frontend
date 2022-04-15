@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from "react";
 import { styled } from '@mui/material/styles';
 import Table from '@mui/material/Table';
 import TableBody from '@mui/material/TableBody';
@@ -34,14 +34,19 @@ const StyledTableRow = styled(TableRow)(({ theme }) => ({
 
 export default function AdminEventTable() {
   const [record, setRecord] = useState([]);
-  getData();
-  var rows = record;
 
-  function getData(){
-    var res = axios.get(`http://localhost:9000/api/admin/ip`)
+  useEffect(()=>{ 
+    getData();
+  }, []);
+
+  async function getData(){
+    var res = await axios.get(`http://localhost:9000/api/admin/ip`)
     .then(res => {
       const records = res.data;
       setRecord(records);
+    })
+    .catch((error) => {
+      alert("Error while fetching ordered items");
     })
 }
   return (
@@ -55,8 +60,8 @@ export default function AdminEventTable() {
           </TableRow>
         </TableHead>
         <TableBody>
-          {rows.map((row) => (
-            <StyledTableRow key={row.name}>
+          {record.map((row) => (
+            <StyledTableRow key={row.ipAddress}>
               <StyledTableCell component="th" scope="row">
                 {row.ipAddress}
               </StyledTableCell>
