@@ -34,7 +34,9 @@ const StyledTableRow = styled(TableRow)(({ theme }) => ({
 
 export default function AdminOrdersTable() {
   const [record, setRecord] = useState([]);
-  var result = [];
+  const [result, setResult] = useState([]);
+  // var result = [];
+
   useEffect(()=>{ 
     getData();
   }, []);
@@ -45,7 +47,7 @@ export default function AdminOrdersTable() {
     .then(res => {
       const records = res.data;
       setRecord(records);
-      CreateResult();
+      createResult();
     })
     .catch((error) => {
       alert("Error while fetching ordered items");
@@ -53,7 +55,7 @@ export default function AdminOrdersTable() {
   }
 
 
-  function CreateResult(){
+  function createResult(){
     var count1 = 0;
     var count2 = 0;
     var count3 = 0;
@@ -80,18 +82,25 @@ export default function AdminOrdersTable() {
        if(new Date(record[i].orderDate).getMonth() === 10) count11 += record[i]['COUNT(*)'];
        if(new Date(record[i].orderDate).getMonth() === 11) count12 += record[i]['COUNT(*)'];
      }
-     result.push({"count":count1,"month":"January"});
-     result.push({"count":count2,"month":"February"});
-     result.push({"count":count3,"month":"March"});
-     result.push({"count":count4,"month":"April"});
-     result.push({"count":count5,"month":"May"});
-     result.push({"count":count6,"month":"June"});
-     result.push({"count":count7,"month":"July"});
-     result.push({"count":count8,"month":"August"});
-     result.push({"count":count9,"month":"September"});
-     result.push({"count":count10,"month":"October"});
-     result.push({"count":count11,"month":"November"});
-     result.push({"count":count12,"month":"December"});
+
+     setResult(oldRes => [...oldRes, {"count":count1,"month":"January"}]);
+     setResult(oldRes => [...oldRes, {"count":count2,"month":"February"}]);
+
+
+
+    //  result.push({"count":count2,"month":"February"});
+    //  result.push({"count":count3,"month":"March"});
+    //  result.push({"count":count4,"month":"April"});
+    //  result.push({"count":count5,"month":"May"});
+    //  result.push({"count":count6,"month":"June"});
+    //  result.push({"count":count7,"month":"July"});
+    //  result.push({"count":count8,"month":"August"});
+    //  result.push({"count":count9,"month":"September"});
+    //  result.push({"count":count10,"month":"October"});
+    //  result.push({"count":count11,"month":"November"});
+    //  result.push({"count":count12,"month":"December"});
+
+     console.log(result);
   } 
 
   
@@ -102,16 +111,15 @@ export default function AdminOrdersTable() {
           <TableRow>
             <StyledTableCell style = {{fontsize:50,fontWeight: 600}}>Number Of Items Sold</StyledTableCell>
             <StyledTableCell style = {{fontsize:50, fontWeight: 600}}>Month</StyledTableCell>
-            
           </TableRow>
         </TableHead>
         <TableBody>
           {result.map((row) => (
-            <StyledTableRow>
-              <StyledTableCell component="th" scope="row">
+            <StyledTableRow key={row.month}>
+              <StyledTableCell component="th" scope="row">{row.month}</StyledTableCell>
+              <StyledTableCell>
                 {row.count}
               </StyledTableCell>
-              <StyledTableCell>{row.month}</StyledTableCell>
             </StyledTableRow>
           ))}
         </TableBody>
