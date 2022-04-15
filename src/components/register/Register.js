@@ -104,6 +104,21 @@ function Register() {
             return false;
         }
 
+        const config3 = {
+            method: 'get',
+            url: "http://localhost:9000/api/user"
+        }
+        
+        const res3 = await axios(config3);
+        const records = res3.data;
+      
+        for (var i = 0; i < Number(records.data.length); i++) {
+            if(records.data[i]['email'] === email){
+                alert("email already exist");
+                return false;
+            }
+          }
+        
 
         const config = {
             method: 'post',
@@ -124,7 +139,8 @@ function Register() {
                 street: street, province: state, zip: zip, phone: phone, userEmail: email
             }
         }
-        
+
+       
         
         const res1 = await axios(config);
 
