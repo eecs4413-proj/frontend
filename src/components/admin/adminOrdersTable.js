@@ -41,13 +41,17 @@ export default function AdminOrdersTable() {
     getData();
   }, []);
 
+  useEffect(()=>{   
+    createResult();
+  }, [record]);
 
-  function getData(){
-    var res = axios.get(`http://localhost:9000/api/admin/ordered`)
+
+ async function getData(){
+    var res = await axios.get(`http://localhost:9000/api/admin/ordered`)
     .then(res => {
       const records = res.data;
       setRecord(records);
-      createResult();
+     
     })
     .catch((error) => {
       alert("Error while fetching ordered items");
@@ -83,24 +87,21 @@ export default function AdminOrdersTable() {
        if(new Date(record[i].orderDate).getMonth() === 11) count12 += record[i]['COUNT(*)'];
      }
 
-     setResult(oldRes => [...oldRes, {"count":count1,"month":"January"}]);
-     setResult(oldRes => [...oldRes, {"count":count2,"month":"February"}]);
-
-
-
-    //  result.push({"count":count2,"month":"February"});
-    //  result.push({"count":count3,"month":"March"});
-    //  result.push({"count":count4,"month":"April"});
-    //  result.push({"count":count5,"month":"May"});
-    //  result.push({"count":count6,"month":"June"});
-    //  result.push({"count":count7,"month":"July"});
-    //  result.push({"count":count8,"month":"August"});
-    //  result.push({"count":count9,"month":"September"});
-    //  result.push({"count":count10,"month":"October"});
-    //  result.push({"count":count11,"month":"November"});
-    //  result.push({"count":count12,"month":"December"});
-
-     console.log(result);
+     var change = []
+     change.push({"count":count1,"month":"January"});
+     change.push({"count":count2,"month":"February"});
+     change.push({"count":count3,"month":"March"});
+     change.push({"count":count4,"month":"April"});
+     change.push({"count":count5,"month":"May"});
+     change.push({"count":count6,"month":"June"});
+     change.push({"count":count7,"month":"July"});
+     change.push({"count":count8,"month":"August"});
+     change.push({"count":count9,"month":"September"});
+     change.push({"count":count10,"month":"October"});
+     change.push({"count":count11,"month":"November"});
+     change.push({"count":count12,"month":"December"});
+    console.table(change);
+     setResult(change);
   } 
 
   
