@@ -40,12 +40,12 @@ export default function AdminOrdersTable() {
   }, []);
 
 
-  function getData(){
+  async function getData(){
     var res = axios.get(`http://localhost:9000/api/admin/ordered`)
     .then(res => {
       const records = res.data;
       setRecord(records);
-      console.log(records[0].orderDate.getMonth());
+      CreateResult();
     })
     .catch((error) => {
       alert("Error while fetching ordered items");
@@ -66,19 +66,19 @@ export default function AdminOrdersTable() {
     var count10 = 0;
     var count11 = 0;
     var count12 = 0;
-     for(var i = 0; i < record.length; i++){
-       if(record[i].orderDate.getMonth() === 0) count1 += record[i]['COUNT(*)'];
-       if(record[i].orderDate.getMonth() === 1) count2 += record[i]['COUNT(*)'];
-       if(record[i].orderDate.getMonth() === 2) count3 += record[i]['COUNT(*)'];
-       if(record[i].orderDate.getMonth() === 3) count4 += record[i]['COUNT(*)'];
-       if(record[i].orderDate.getMonth() === 4) count5 += record[i]['COUNT(*)'];
-       if(record[i].orderDate.getMonth() === 5) count6 += record[i]['COUNT(*)'];
-       if(record[i].orderDate.getMonth() === 6) count7 += record[i]['COUNT(*)'];
-       if(record[i].orderDate.getMonth() === 7) count8 += record[i]['COUNT(*)'];
-       if(record[i].orderDate.getMonth() === 8) count9 += record[i]['COUNT(*)'];
-       if(record[i].orderDate.getMonth() === 9) count10 += record[i]['COUNT(*)'];
-       if(record[i].orderDate.getMonth() === 10) count11 += record[i]['COUNT(*)'];
-       if(record[i].orderDate.getMonth() === 11) count12 += record[i]['COUNT(*)'];
+     for(var i = 0; i < Number(record.length); i++){
+       if(new Date(record[i].orderDate).getMonth() === 0) count1 += record[i]['COUNT(*)'];
+       if(new Date(record[i].orderDate).getMonth() === 1) count2 += record[i]['COUNT(*)'];
+       if(new Date(record[i].orderDate).getMonth() === 2) count3 += record[i]['COUNT(*)'];
+       if(new Date(record[i].orderDate).getMonth() === 3) count4 += record[i]['COUNT(*)'];
+       if(new Date(record[i].orderDate).getMonth() === 4) count5 += record[i]['COUNT(*)'];
+       if(new Date(record[i].orderDate).getMonth() === 5) count6 += record[i]['COUNT(*)'];
+       if(new Date(record[i].orderDate).getMonth() === 6) count7 += record[i]['COUNT(*)'];
+       if(new Date(record[i].orderDate).getMonth() === 7) count8 += record[i]['COUNT(*)'];
+       if(new Date(record[i].orderDate).getMonth() === 8) count9 += record[i]['COUNT(*)'];
+       if(new Date(record[i].orderDate).getMonth() === 9) count10 += record[i]['COUNT(*)'];
+       if(new Date(record[i].orderDate).getMonth() === 10) count11 += record[i]['COUNT(*)'];
+       if(new Date(record[i].orderDate).getMonth() === 11) count12 += record[i]['COUNT(*)'];
      }
      result.push({"count":count1,"month":"January"});
      result.push({"count":count2,"month":"February"});
@@ -107,7 +107,7 @@ export default function AdminOrdersTable() {
         </TableHead>
         <TableBody>
           {result.map((row) => (
-            <StyledTableRow key={row.name}>
+            <StyledTableRow>
               <StyledTableCell component="th" scope="row">
                 {row.ipAddress}
               </StyledTableCell>
