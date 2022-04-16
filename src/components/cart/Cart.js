@@ -8,17 +8,19 @@ import {
   Container,
 } from "@mui/material";
 import axios from "axios";
-
+import {useNavigate} from "react-router-dom";
 import CartItem from "./cart_item";
+import { EighteenMp } from "@mui/icons-material";
 
 const Cart = () => {
   const [items, setItems] = React.useState([]);
   const userId = localStorage.getItem("UserID");
   const token = localStorage.getItem("Token");
   const [shoppingCart, setShoppingCart] = React.useState();
+  const u = new useNavigate();
+  var qty = [];
 
-  React.useEffect(async ()=>{
-   
+  React.useEffect(async ()=>{   
     const itemData = await fetchItems();
     const cartData = await fetchCart();
 
@@ -29,30 +31,51 @@ const Cart = () => {
   const handleFilter = (itemData, cartData) =>{
 
     console.log({itemData, cartData})
-     var newItems =[];
+   
       var index1 = Number(cartData.length);
       var index2 = Number(itemData.length)
-  
+      var newItems = [];
+   
+ 
       for(var i =0; i< index1; i++)
       {
         for(var j =0; j<index2 ; j++)
         {
           if(cartData[i].itemNo === itemData[j].itemNo)
-          newItems.push(itemData[j])
+            newItems.push(itemData[j])   
         }
       }
 
+      for( i =0 ; i< index2; i++)
+      qty[i] = 0;   
+      
+      for( i =0 ; i< index1; i++)
+      qty[cartData[i].itemNo] = cartData[i].quantity ;  
+             
+
       setItems(newItems)
-      console.log({newItems})
+      console.log({newItems, qty})
   }
 
   const handleDelete = async (e) =>{
 
     console.log(e)
     //todo
-    // axios.post(
-    //   'http://localhost:9000/api/item'
-    // )
+     axios({
+       method: 'DELETE',
+       url:  'http://localhost:9000/api/shoppingcart/'+userId+'/'+e,
+       headers: { "Authorization": "Bearer " + token}
+     }).then((response) =>{
+       console.log(response)
+       if(response.status  === 200){
+        alert("item removed successfully")
+        
+        window.location.reload();
+
+       }
+    })
+      
+     
   }
 
      const fetchItems= async ()=>{
@@ -75,10 +98,14 @@ const Cart = () => {
     }
     
     const updateCart = () =>{
+      //post the new qty
 
-
+      // go to next page
+     
+      u('/checkout');
     }
 
+    
     
   return (
     <>
@@ -99,13 +126,13 @@ const Cart = () => {
               md={4}
               direction="column"
             >
-              <CartItem item={product} handleDelete ={handleDelete} />
+              <CartItem item={product} handleDelete ={handleDelete}  quantity={qty[product.itemNo]}/>
             </Stack>
           ))}
         </Stack>
         <br />
         <div style={{ display: "flex" }}>
-          <button style={{ marginLeft: "auto" }}>checkout</button>
+          <button onClick ={updateCart} style={{ marginLeft: "auto" }}>checkout</button>
         </div>
         <br />
       </Container>
