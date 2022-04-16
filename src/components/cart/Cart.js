@@ -8,97 +8,131 @@ import {
   Container,
 } from "@mui/material";
 import axios from "axios";
-import {useNavigate} from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import CartItem from "./cart_item";
 import { EighteenMp } from "@mui/icons-material";
+import { getSuggestedQuery } from "@testing-library/react";
 
 const Cart = () => {
   const [shoppingCart, setShoppingCart] = React.useState();
   const [items, setItems] = React.useState([]);
   const userId = localStorage.getItem("UserID");
   const token = localStorage.getItem("Token");
-  
+  const [qty, setQty] = React.useState();
+
   const u = new useNavigate();
 
-  React.useEffect(async ()=>{   
+  React.useEffect(async () => {
     const itemData = await fetchItems();
     const cartData = await fetchCart();
 
     handleFilter(itemData, cartData);
-    
   }, []);
 
-  const handleFilter = (itemData, cartData) =>{
+  const handleFilter = (itemData, cartData) => {
+    console.log({ itemData, cartData });
 
-    console.log({itemData, cartData})
-   
-      var index1 = Number(cartData.length);
-      var index2 = Number(itemData.length)
-      var newItems = [];
-   
- 
-      for(var i =0; i< index1; i++)
-      {
-        for(var j =0; j<index2 ; j++)
-        {
-          if(cartData[i].itemNo === itemData[j].itemNo)
-            newItems.push(itemData[j])   
+    var index1 = Number(cartData.length);
+    var index2 = Number(itemData.length);
+    var newItems = [];
+    var tempqty = [];
+
+    for (var i = 0; i < index1; i++) {
+      for (var j = 0; j < index2; j++) {
+        if (cartData[i].itemNo === itemData[j].itemNo) {
+          newItems.push(itemData[j]);
+          tempqty[cartData[i].itemNo] = cartData[i].quantity;
         }
       }
+    }
 
-      setItems(newItems)
-      console.log({newItems})
-  }
+    setQty(tempqty);
+    setShoppingCart(cartData);
+    setItems(newItems);
+    console.log({ newItems, tempqty });
+  };
 
-  const handleDelete = async (e) =>{
+  const handleQty = (index, value) => {
+    var tempqty = qty;
+    for (var i = 0; i < qty.length; i++) {
+      if (i === index) {
+        tempqty[i] = value;
+      }
+    }
 
-    console.log(e)
+    setQty(tempqty);
+  };
+
+  const handleDelete = async (e) => {
+    console.log(e);
     //todo
-     axios({
-       method: 'DELETE',
-       url:  'http://localhost:9000/api/shoppingcart/'+userId+'/'+e,
-       headers: { "Authorization": "Bearer " + token}
-     }).then((response) =>{
-       console.log(response)
-       if(response.status  === 200){
-        alert("item removed successfully")
-        
+    axios({
+      method: "DELETE",
+      url: "http://localhost:9000/api/shoppingcart/" + userId + "/" + e,
+      headers: { Authorization: "Bearer " + token },
+    }).then((response) => {
+      console.log(response);
+      if (response.status === 200) {
+        alert("item removed successfully");
+
         window.location.reload();
+      }
+    });
+  };
 
-       }
-    })
-      
-  }
+  const fetchItems = async () => {
+    return axios({
+      method: "get",
+      url: "http://localhost:9000/api/item",
+    }).then((response) => {
+      return response.data;
+    });
+  };
 
-     const fetchItems= async ()=>{
-     return  axios({
-        method: 'get',
-        url: 'http://localhost:9000/api/item'
-      }).then((response) => {
-        return response.data ;
-        });
+  const fetchCart = async () => {
+    return axios({
+      method: "get",
+      url: "http://localhost:9000/api/shoppingcart/" + userId,
+    }).then((response) => {
+      return response.data;
+    });
+  };
+
+  const updateCart = async () => {
+    //post the new qty
+    if (shoppingCart.length === 0) {
+      alert("your cart is empty!");
+      return;
     }
+    var jsonArr = [];
+    for (var i = 0; i < shoppingCart.length; i++) {
+      var t = {
+        userEmail: userId,
+        itemNo: shoppingCart[i].itemNo,
+        quantity: Number(qty[shoppingCart[i].itemNo]),
+      };
+      console.log(t);
+      jsonArr.push(t);
 
-    const fetchCart = async  () =>{
-     return  axios({
-        method: 'get',
-        url: 'http://localhost:9000/api/shoppingcart/'+userId
-      }).then((response) => {
-         return response.data ;
-
-      });
     }
+    console.log(jsonArr)
     
-    const updateCart = () =>{
-      //post the new qty
 
-      // go to next page
-     
-      u('/checkout');
-    }
+    return axios({
+      method: "put",
+      url: "http://localhost:9000/api/shoppingcart/" + userId,
+      body: jsonArr,
+      headers: { Authorization: "Bearer " + token },
+    }).then((response) => {
+      console.log(response.data);
 
-    
-    
+      u("/checkout");
+      return response.data;
+    });
+
+    // go to next page
+  };
+
   return (
     <>
       <Container sx={{ width: "30%" }}>
@@ -118,13 +152,20 @@ const Cart = () => {
               md={4}
               direction="column"
             >
-              <CartItem item={product} handleDelete ={handleDelete}  />
+              <CartItem
+                item={product}
+                handleDelete={handleDelete}
+                quantity={qty[product.itemNo]}
+                handleQty={handleQty}
+              />
             </Stack>
           ))}
         </Stack>
         <br />
         <div style={{ display: "flex" }}>
-          <button onClick ={updateCart} style={{ marginLeft: "auto" }}>checkout</button>
+          <button onClick={updateCart} style={{ marginLeft: "auto" }}>
+            checkout
+          </button>
         </div>
         <br />
       </Container>
