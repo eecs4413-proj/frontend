@@ -38,6 +38,7 @@ function Login() {
             localStorage.setItem("Token", res.data.token);
             localStorage.setItem("UserID", login.email);
             navigate("/"); 
+            window.location.reload();
             }
         })
         .catch((error) => {

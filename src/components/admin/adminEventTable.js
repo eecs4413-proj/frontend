@@ -34,6 +34,8 @@ const StyledTableRow = styled(TableRow)(({ theme }) => ({
 
 export default function AdminEventTable() {
   const [record, setRecord] = useState([]);
+  const userId = localStorage.getItem("UserID");
+  const token = localStorage.getItem("Token");
 
   useEffect(()=>{ 
     getData();
@@ -50,26 +52,35 @@ export default function AdminEventTable() {
     })
 }
   return (
-    <TableContainer component={Paper}>
-      <Table sx={{ minWidth: 700 }}>
-        <TableHead>
-          <TableRow>
-            <StyledTableCell style = {{fontsize:50,fontWeight: 600}}>IP address</StyledTableCell>
-            <StyledTableCell style = {{fontsize:50, fontWeight: 600}}>Event Type</StyledTableCell>
-            
-          </TableRow>
-        </TableHead>
-        <TableBody>
-          {record.map((row) => (
-            <StyledTableRow key={row.ipAddress}>
-              <StyledTableCell component="th" scope="row">
-                {row.ipAddress}
-              </StyledTableCell>
-              <StyledTableCell>{row.eventType}</StyledTableCell>
-            </StyledTableRow>
-          ))}
-        </TableBody>
-      </Table>
-    </TableContainer>
+    <div>
+      {userId && token ? (
+        <div>
+          <TableContainer component={Paper}>
+            <Table sx={{ minWidth: 700 }}>
+              <TableHead>
+                <TableRow>
+                  <StyledTableCell style = {{fontsize:50,fontWeight: 600}}>IP address</StyledTableCell>
+                  <StyledTableCell style = {{fontsize:50, fontWeight: 600}}>Event Type</StyledTableCell>
+                </TableRow>
+              </TableHead>
+              <TableBody>
+                {record.map((row) => (
+                  <StyledTableRow key={row.ipAddress}>
+                    <StyledTableCell component="th" scope="row">
+                      {row.ipAddress}
+                    </StyledTableCell>
+                    <StyledTableCell>{row.eventType}</StyledTableCell>
+                  </StyledTableRow>
+                ))}
+              </TableBody>
+            </Table>
+          </TableContainer>
+        </div>
+      ) :
+      <div>
+        You do not have permission to view this page...
+      </div>
+      }
+    </div>
   );
 }
