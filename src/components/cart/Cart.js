@@ -104,31 +104,31 @@ const Cart = () => {
       alert("your cart is empty!");
       return;
     }
-    var jsonArr = [];
+   
     for (var i = 0; i < shoppingCart.length; i++) {
       var t = {
-        userEmail: userId,
         itemNo: shoppingCart[i].itemNo,
         quantity: Number(qty[shoppingCart[i].itemNo]),
       };
-      console.log(t);
-      jsonArr.push(t);
+      console.log(t)
+      axios({
+        method: "put",
+        url: "http://localhost:9000/api/shoppingcart/" + userId,
+        data: t,
+        headers: { Authorization: "Bearer " + token },
+      }).then((response) => {
+        console.log(response.data);
+      })
 
     }
-    console.log(jsonArr)
+   
     
 
-    return axios({
-      method: "put",
-      url: "http://localhost:9000/api/shoppingcart/" + userId,
-      body: jsonArr,
-      headers: { Authorization: "Bearer " + token },
-    }).then((response) => {
-      console.log(response.data);
+    
+     
 
       u("/checkout");
-      return response.data;
-    });
+      
 
     // go to next page
   };
