@@ -13,12 +13,12 @@ import CartItem from "./cart_item";
 import { EighteenMp } from "@mui/icons-material";
 
 const Cart = () => {
+  const [shoppingCart, setShoppingCart] = React.useState();
   const [items, setItems] = React.useState([]);
   const userId = localStorage.getItem("UserID");
   const token = localStorage.getItem("Token");
-  const [shoppingCart, setShoppingCart] = React.useState();
+  
   const u = new useNavigate();
-  var qty = [];
 
   React.useEffect(async ()=>{   
     const itemData = await fetchItems();
@@ -46,15 +46,8 @@ const Cart = () => {
         }
       }
 
-      for( i =0 ; i< index2; i++)
-      qty[i] = 0;   
-      
-      for( i =0 ; i< index1; i++)
-      qty[cartData[i].itemNo] = cartData[i].quantity ;  
-             
-
       setItems(newItems)
-      console.log({newItems, qty})
+      console.log({newItems})
   }
 
   const handleDelete = async (e) =>{
@@ -75,7 +68,6 @@ const Cart = () => {
        }
     })
       
-     
   }
 
      const fetchItems= async ()=>{
@@ -126,7 +118,7 @@ const Cart = () => {
               md={4}
               direction="column"
             >
-              <CartItem item={product} handleDelete ={handleDelete}  quantity={qty[product.itemNo]}/>
+              <CartItem item={product} handleDelete ={handleDelete}  />
             </Stack>
           ))}
         </Stack>

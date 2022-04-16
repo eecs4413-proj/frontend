@@ -7,6 +7,8 @@ import {
   Button,
   Container,
 } from "@mui/material";
+import axios from "axios";
+import {useNavigate} from "react-router-dom";
 
 const Checkout = () => {
   const [firstName, setFirstName] = React.useState();
@@ -20,6 +22,54 @@ const Checkout = () => {
   const [cardNumber, setCardNumber] = React.useState();
   const [cardExpiry, setCardExpiry] = React.useState();
   const [cvv, setCVV] = React.useState();
+  const navigate = new useNavigate();
+  
+  const getCheckoutAttempts = async ()=>{
+    return  axios({
+      method: 'get',
+      url: 'http://localhost:9000/api/admin/checkout'
+    }).then((response) => {
+      return response.data ;
+      });
+  }
+
+  const updateCheckoutAttempts = async ()=>{
+    return  axios({
+      method: 'post',
+      url: 'http://localhost:9000/api/admin/checkout'
+    }).then((response) => {
+      return response.data ;
+      });
+  }
+  var checkoutAttempts;
+
+  
+  const handleClick = async ()=>{
+    if(typeof firstName !== 'undefined' && typeof lastName !== 'undefined' && typeof adress !== 'undefined' && typeof postalCode !== 'undefined'
+      && typeof city !== 'undefined' && typeof country !== 'undefined' && typeof province !== 'undefined' && typeof cardName !== 'undefined' && typeof cardNumber !=='undefined'
+      && typeof cardExpiry !== 'undefined' && typeof cvv !== 'undefined')
+      {
+        
+        checkoutAttempts =await  getCheckoutAttempts();
+        console.log(checkoutAttempts[0].Count)
+        if( (checkoutAttempts[0].Count +1) % 3 === 0 )
+        {
+          alert("error credit card denied. Try again")
+        }
+        else{
+          alert("success")
+          //go to next page
+          navigate('/review');
+        }
+       await updateCheckoutAttempts();
+       console.log(checkoutAttempts[0].Count)
+      }
+      else{
+        alert("error please fill out the form")
+      }
+
+      
+  }
 
   return (
     <>
@@ -128,7 +178,7 @@ const Checkout = () => {
                 onChange={(e) => setCVV(e.target.value)}
               ></TextField>
             </Stack>
-            <Button variant="contained">Checkout</Button>
+            <Button onClick = {handleClick} variant="contained">Checkout</Button>
           </Stack>
         </Box>
       </Container>

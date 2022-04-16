@@ -15,13 +15,14 @@ import {
 
 import useImage from '../hooks/useImage'
 
-const CartItem = ({ item, handleDelete, quantity }) => {
-  const { image, loading, error } = useImage(item.img)
+const CartItem = ({ item, handleDelete }) => {
+  const { image, loading, error } = useImage(item.imgsrc)
   const[qty, setQty] = React.useState();
 
-  React.useEffect( ()=>{   
-    setQty(quantity);
+  React.useEffect( (e)=>{   
+    setQty(e);
   }, []);
+ 
 
   return (
     <>
@@ -53,7 +54,7 @@ const CartItem = ({ item, handleDelete, quantity }) => {
               <Typography variant="h6" style={{fontWeight: 'bold'}}>${item.price}</Typography>
               <Typography variant="title" noWrap>&nbsp;</Typography>
                  <br/>         
-              <TextField  style={{ width: "100%" }} variant="outlined" label="Quantity" justify="right" type="number" value = {qty} onChange={e => setQty(e.target.value)} InputProps={{ inputProps: { min: 1 } }}/>
+              <TextField  style={{ width: "100%" }} variant="outlined" label="Quantity" justify="right" type="number" defaultValue={1} value = {qty} onChange={e => setQty(e.target.value)} InputProps={{ inputProps: { min: 1 } }}/>
            
             </CardContent>
             <CardActions>

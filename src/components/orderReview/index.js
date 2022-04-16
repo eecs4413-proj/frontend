@@ -15,25 +15,96 @@ import TableContainer from '@mui/material/TableContainer';
 import TableHead from '@mui/material/TableHead';
 import TableRow from '@mui/material/TableRow';
 import Paper from '@mui/material/Paper';
+import axios from "axios";
+import { useNavigate } from "react-router-dom";
 
 const OrderReview = () => {
- //get all of the orders
-    const mockOrder = [
-        ["id1","coke","2.99","3","8.97"],
-        ["id2","MuscleMilk","3.99","10", "39.9"]
-    ];
+  const [shoppingCart, setShoppingCart] = React.useState();
+  const [items, setItems] = React.useState([]);
+  const userId = localStorage.getItem("UserID");
+  const token = localStorage.getItem("Token");
+  const[order, setOrder] = React.useState([]);
+  const[totalCost, setTotalCost] = React.useState();
+  const navigate = new useNavigate();
+  
 
-    
-    var totalCost=0;
-    const summary =() =>{
-        for(var i=0; i< mockOrder.length; i++)
+ //get all of the orders
+ React.useEffect(async ()=>{   
+  const itemData = await fetchItems();
+  const cartData = await fetchCart();
+
+ await handleFilter(itemData, cartData);
+  
+}, []);
+
+const handleFilter = (itemData, cartData) =>{
+
+  console.log({itemData, cartData})
+ 
+    var index1 = Number(cartData.length);
+    var index2 = Number(itemData.length)
+    var newItems = [];
+    var tempOrder = [[]];
+    var index =0;
+    var tempCost =0;
+
+    for(var i =0; i< index1; i++)
+    {
+      for(var j =0; j<index2 ; j++)
+      {
+        if(cartData[i].itemNo === itemData[j].itemNo)
         {
-           totalCost += Number(mockOrder[i][2])* Number(mockOrder[i][3])
+          newItems.push(itemData[j])   
+          tempOrder[index] = [itemData[j].itemNo, itemData[j].name, itemData[j].price, cartData[i].quantity, Number(cartData[i].quantity)*Number(itemData[j].price)]
+          index++;
         }
+      }
     }
+
+    for( i=0; i< tempOrder.length; i++)
+        {
+         tempCost += Number(tempOrder[i][2])* Number(tempOrder[i][3])
+        }
+
+    setItems(newItems)
+    setTotalCost(tempCost)
+    setOrder(tempOrder)
+    console.log({newItems, tempOrder})
+}
+const fetchItems= async ()=>{
+  return  axios({
+     method: 'get',
+     url: 'http://localhost:9000/api/item'
+   }).then((response) => {
+     return response.data ;
+     });
+ }
+
+ const fetchCart = async  () =>{
+  return  axios({
+     method: 'get',
+     url: 'http://localhost:9000/api/shoppingcart/'+userId
+   }).then((response) => {
+      return response.data ;
+
+   });
+ }
+   
+ const handleClick = async() =>{
+  alert("purchase successful. your order is on the way");
+  return  axios({
+    method: 'DELETE',
+    url: 'http://localhost:9000/api/shoppingcart/'+userId,
+    headers: { "Authorization": "Bearer " + token}
+  }).then(()=>{
+    navigate("/")
+  })
+ }
+  
+   
   return (
     <>
-    <body onLoad={summary()}></body>
+   
       <Container sx={{width:"50%"}}>
           <Box>
     <Typography sx={{textAlign:"center"}}  variant="h4">Order Summary</Typography>         
@@ -49,7 +120,7 @@ const OrderReview = () => {
           </TableRow>
         </TableHead>
         <TableBody>
-          {mockOrder.map((row) => (
+          {order.map((row) => (
             <TableRow>
               
               <TableCell align="left">{row[1]}</TableCell>
@@ -78,7 +149,7 @@ const OrderReview = () => {
       </Table>
     </TableContainer>
 <br/>
-    <Button sx={{marginLeft:"50%", width:"200px"}} variant="contained">Confirm Order</Button>
+    <Button onClick = {handleClick} sx={{marginLeft:"50%", width:"200px"}} variant="contained">Confirm Order</Button>
     </Box>
       </Container>
     </>
