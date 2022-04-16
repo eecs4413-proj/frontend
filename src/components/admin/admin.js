@@ -10,12 +10,12 @@ function Admin() {
         <h2 className={style.title}>Welcome Admin</h2>
         <div className="text-center mb-5 mt-3">   
         <Button variant="primary" size="lg" onClick= {() => {navigate("/adminEventTable");}}>
-            check webusage
+            Check webusage
         </Button>
         </div>  
         <div className="text-center mb-3 mt-3">   
         <Button variant="primary" size="lg" onClick= {() => {navigate("/adminOrdersTable");}}>
-            check order history
+            Check order history
         </Button>
         </div>    
         </div>

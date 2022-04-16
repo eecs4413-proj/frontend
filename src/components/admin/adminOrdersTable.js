@@ -104,27 +104,36 @@ export default function AdminOrdersTable() {
      setResult(change);
   } 
 
-  
   return (
-    <TableContainer component={Paper}>
-      <Table sx={{ minWidth: 700 }}>
-        <TableHead>
-          <TableRow>
-            <StyledTableCell style = {{fontsize:50,fontWeight: 600}}>Number Of Items Sold</StyledTableCell>
-            <StyledTableCell style = {{fontsize:50, fontWeight: 600}}>Month</StyledTableCell>
-          </TableRow>
-        </TableHead>
-        <TableBody>
-          {result.map((row) => (
-            <StyledTableRow key={row.month}>
-              <StyledTableCell component="th" scope="row">{row.month}</StyledTableCell>
-              <StyledTableCell>
-                {row.count}
-              </StyledTableCell>
-            </StyledTableRow>
-          ))}
-        </TableBody>
-      </Table>
-    </TableContainer>
+    <div>
+      {userId && token ? (
+        <div>
+          <TableContainer component={Paper}>
+            <Table sx={{ minWidth: 700 }}>
+              <TableHead>
+                <TableRow>
+                  <StyledTableCell style = {{fontsize:50, fontWeight: 600}}>Month</StyledTableCell>
+                  <StyledTableCell style = {{fontsize:50,fontWeight: 600}}>Number Of Items Sold</StyledTableCell>
+                </TableRow>
+              </TableHead>
+              <TableBody>
+                {result.map((row) => (
+                  <StyledTableRow key={row.month}>
+                    <StyledTableCell component="th" scope="row">{row.month}</StyledTableCell>
+                    <StyledTableCell>
+                      {row.count}
+                    </StyledTableCell>
+                  </StyledTableRow>
+                ))}
+              </TableBody>
+            </Table>
+          </TableContainer>
+        </div>
+      ) :
+      <div>
+        You do not have permission to view this page...
+      </div>
+      }
+    </div>
   );
 }
