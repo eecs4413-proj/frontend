@@ -18,6 +18,8 @@ import Paper from '@mui/material/Paper';
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
 
+const baseUrl = 'http://ec2-54-234-144-13.compute-1.amazonaws.com:9000';
+
 const OrderReview = () => {
   const [shoppingCart, setShoppingCart] = React.useState();
   const [items, setItems] = React.useState([]);
@@ -74,7 +76,7 @@ const handleFilter = (itemData, cartData) =>{
 const fetchItems= async ()=>{
   return  axios({
      method: 'get',
-     url: 'http://localhost:9000/api/item'
+     url: baseUrl + '/api/item'
    }).then((response) => {
      return response.data ;
      });
@@ -83,7 +85,7 @@ const fetchItems= async ()=>{
  const fetchCart = async  () =>{
   return  axios({
      method: 'get',
-     url: 'http://localhost:9000/api/shoppingcart/'+userId
+     url: baseUrl + '/api/shoppingcart/'+userId
    }).then((response) => {
       return response.data ;
 
@@ -94,7 +96,7 @@ const fetchItems= async ()=>{
   alert("purchase successful. your order is on the way");
   return  axios({
     method: 'DELETE',
-    url: 'http://localhost:9000/api/shoppingcart/'+userId,
+    url: baseUrl + '/api/shoppingcart/'+userId,
     headers: { "Authorization": "Bearer " + token}
   }).then(()=>{
     navigate("/")

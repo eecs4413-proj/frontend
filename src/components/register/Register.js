@@ -5,6 +5,8 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 import axios from 'axios';
 import {useNavigate} from "react-router-dom";
 
+const baseUrl = 'http://ec2-54-234-144-13.compute-1.amazonaws.com:9000';
+
 function Register() {
     /**
      * Registration State Variables
@@ -106,7 +108,7 @@ function Register() {
 
         const config3 = {
             method: 'get',
-            url: "http://localhost:9000/api/user"
+            url: baseUrl + "/api/user"
         }
         
         const res3 = await axios(config3);
@@ -122,7 +124,7 @@ function Register() {
 
         const config = {
             method: 'post',
-            url: "http://localhost:9000/api/user",
+            url: baseUrl + "/api/user",
             data: {
                 email: email,
                 pw: password,
@@ -134,7 +136,7 @@ function Register() {
 
         const config2 = {
             method: 'post',
-            url: "http://localhost:9000/api/user/address",
+            url: baseUrl + "/api/user/address",
             data: {
                 street: street, province: state, zip: zip, phone: phone, userEmail: email
             }

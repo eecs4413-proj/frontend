@@ -49,7 +49,7 @@ export default function AdminOrdersTable() {
 
 
  async function getData(){
-    var res = await axios.get(`http://localhost:9000/api/admin/ordered`)
+    var res = await axios.get(baseUrl + '/api/admin/ordered')
     .then(res => {
       const records = res.data;
       setRecord(records);

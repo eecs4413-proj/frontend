@@ -9,6 +9,7 @@ import TableRow from '@mui/material/TableRow';
 import Paper from '@mui/material/Paper';
 import axios from 'axios';
 
+const baseUrl = 'http://ec2-54-234-144-13.compute-1.amazonaws.com:9000';
 
 const StyledTableCell = styled(TableCell)(({ theme }) => ({
   [`&.${tableCellClasses.head}`]: {
@@ -42,7 +43,7 @@ export default function AdminEventTable() {
   }, []);
 
   async function getData(){
-    var res = await axios.get(`http://localhost:9000/api/admin/ip`)
+    var res = await axios.get(baseUrl + '/api/admin/ip')
     .then(res => {
       const records = res.data;
       setRecord(records);

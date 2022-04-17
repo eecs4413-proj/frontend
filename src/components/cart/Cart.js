@@ -13,6 +13,8 @@ import CartItem from "./cart_item";
 import { EighteenMp } from "@mui/icons-material";
 import { getSuggestedQuery } from "@testing-library/react";
 
+const baseUrl = 'http://ec2-54-234-144-13.compute-1.amazonaws.com:9000';
+
 const Cart = () => {
   const [shoppingCart, setShoppingCart] = React.useState();
   const [items, setItems] = React.useState([]);
@@ -68,7 +70,7 @@ const Cart = () => {
     //todo
     axios({
       method: "DELETE",
-      url: "http://localhost:9000/api/shoppingcart/" + userId + "/" + e,
+      url: baseUrl + "/api/shoppingcart/" + userId + "/" + e,
       headers: { Authorization: "Bearer " + token },
     }).then((response) => {
       console.log(response);
@@ -83,7 +85,7 @@ const Cart = () => {
   const fetchItems = async () => {
     return axios({
       method: "get",
-      url: "http://localhost:9000/api/item",
+      url: baseUrl + "/api/item",
     }).then((response) => {
       return response.data;
     });
@@ -92,7 +94,7 @@ const Cart = () => {
   const fetchCart = async () => {
     return axios({
       method: "get",
-      url: "http://localhost:9000/api/shoppingcart/" + userId,
+      url: baseUrl + "/api/shoppingcart/" + userId,
     }).then((response) => {
       return response.data;
     });
@@ -113,7 +115,7 @@ const Cart = () => {
       console.log(t)
       axios({
         method: "put",
-        url: "http://localhost:9000/api/shoppingcart/" + userId,
+        url: baseUrl + "/api/shoppingcart/" + userId,
         data: t,
         headers: { Authorization: "Bearer " + token },
       }).then((response) => {

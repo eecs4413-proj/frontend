@@ -18,24 +18,6 @@ import ProtectedRoute from "./ProtectedRoute";
 import { ListItemSecondaryAction } from "@mui/material";
 
 const App = () => {
-//   const userId = localStorage.getItem("UserID");
-//   const token = localStorage.getItem("Token");
-
-
-//   function isAuthLogin(){
-//     if (userId && token) {
-//         axios({
-//           method: 'get',
-//           url: 'http://localhost:9000/api/user/' + userId,
-//           headers: { "Authorization": "Bearer " + token},  
-//         }).then((response) => {
-//           console.log(response);
-//           if(response.status === 200) {
-//             return true;
-//           }
-//         });
-//       }
-// }
 
   return (
     <Router>

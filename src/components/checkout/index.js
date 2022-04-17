@@ -10,6 +10,8 @@ import {
 import axios from "axios";
 import {useNavigate} from "react-router-dom";
 
+const baseUrl = 'http://ec2-54-234-144-13.compute-1.amazonaws.com:9000';
+
 const Checkout = () => {
   const [firstName, setFirstName] = React.useState();
   const [lastName, setLastName] = React.useState();
@@ -27,7 +29,7 @@ const Checkout = () => {
   const getCheckoutAttempts = async ()=>{
     return  axios({
       method: 'get',
-      url: 'http://localhost:9000/api/admin/checkout'
+      url: baseUrl + '/api/admin/checkout'
     }).then((response) => {
       return response.data ;
       });
@@ -36,7 +38,7 @@ const Checkout = () => {
   const updateCheckoutAttempts = async ()=>{
     return  axios({
       method: 'post',
-      url: 'http://localhost:9000/api/admin/checkout'
+      url: baseUrl + '/api/admin/checkout'
     }).then((response) => {
       return response.data ;
       });
