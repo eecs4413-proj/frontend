@@ -18,7 +18,7 @@ import Paper from '@mui/material/Paper';
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
 
-const baseUrl = 'http://ec2-54-234-144-13.compute-1.amazonaws.com:9000';
+const baseUrl = 'http://localhost:9000'//'http://ec2-54-234-144-13.compute-1.amazonaws.com:9000';
 
 const OrderReview = () => {
   const [shoppingCart, setShoppingCart] = React.useState();
@@ -95,6 +95,25 @@ const fetchItems= async ()=>{
  const handleClick = async() =>{
   alert("purchase successful. your order is on the way");
   
+  var orderNum =0;
+  await axios({
+    method: 'get',
+    url: baseUrl+'/api/orderedItem/',
+  
+  }).then((response)=>{
+    
+    for(var i=0; i< response.data.length; i++)
+    {
+      if(response.data[i].orderNo > orderNum)
+      {
+        orderNum = response.data[i].orderNo;
+      }
+    }
+  });
+
+  orderNum += 1;
+  console.log(orderNum);
+
   await axios({
     method: 'get',
     url: baseUrl+'/api/shoppingcart/'+userId,
@@ -104,11 +123,13 @@ const fetchItems= async ()=>{
 
     for(var i=0; i< response.data.length; i++)
     {
+      console.log({OrderNo: orderNum, itemNo: response.data[i].itemNo, quantity: response.data[i].quantity})
       axios({
         method: 'post',
-        url: baseUrl+'/api/orderItem/',
+        url: baseUrl+'/api/orderedItem/',
         headers: { "Authorization": "Bearer " + token},
-        data: {itemNo: response.data[i].itemNo, quantity: response.data[i].quantity}
+        data: {orderNo: orderNum, itemNo: response.data[i].itemNo, quantity: response.data[i].quantity}
+       
       }).then((r)=>{
           console.log(r.status)
       })
