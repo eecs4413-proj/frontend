@@ -94,15 +94,27 @@ const fetchItems= async ()=>{
    
  const handleClick = async() =>{
   alert("purchase successful. your order is on the way");
-  return  axios({
-    method: 'DELETE',
-    url: baseUrl + '/api/shoppingcart/'+userId,
-    headers: { "Authorization": "Bearer " + token}
-  }).then(()=>{
-    navigate("/")
-  })
- }
   
+  await axios({
+    method: 'get',
+    url: baseUrl+'/api/shoppingcart/'+userId,
+    headers: { "Authorization": "Bearer " + token}
+  }).then((response)=>{
+    console.log(response.data)
+
+    for(var i=0; i< response.data.length; i++)
+    {
+      axios({
+        method: 'post',
+        url: baseUrl+'/api/orderItem/',
+        headers: { "Authorization": "Bearer " + token},
+        data: {itemNo: response.data[i].itemNo, quantity: response.data[i].quantity}
+      }).then((r)=>{
+          console.log(r.status)
+      })
+    }
+  })
+};
    
   return (
     <>
