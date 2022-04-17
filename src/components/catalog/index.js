@@ -10,7 +10,7 @@ import {
 
 import CatalogItem from './item';
 
-const baseUrl = 'http://localhost:9000';
+const baseUrl = 'http://ec2-54-234-144-13.compute-1.amazonaws.com:9000';
 
 const Catalog = () => {
   const [items, setItems] = useState([]);

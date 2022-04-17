@@ -25,7 +25,7 @@ import RemoveIcon from "@mui/icons-material/Remove";
 import RefreshIcon from '@mui/icons-material/Refresh';
 import useImage from './hooks/useImage'
 
-const baseUrl = 'http://localhost:9000';
+const baseUrl = 'http://ec2-54-234-144-13.compute-1.amazonaws.com:9000';
 
 const modalStyle = {
   position: 'absolute',
