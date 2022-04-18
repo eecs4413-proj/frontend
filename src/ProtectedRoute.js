@@ -2,7 +2,7 @@ import React from 'react'
 import { Route,Navigate } from "react-router-dom";
 import axios from "axios";
 
-const baseUrl = 'http://ec2-54-234-144-13.compute-1.amazonaws.com:9000';
+const baseUrl = 'http://ec2-54-224-112-72.compute-1.amazonaws.com:9000';
 
 export default function ProtectedRoute({isAuth: isAuth, component:component, ...rest}) {
   const userId = localStorage.getItem("UserID");

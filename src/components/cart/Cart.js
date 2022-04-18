@@ -13,7 +13,7 @@ import CartItem from "./cart_item";
 import { EighteenMp } from "@mui/icons-material";
 import { getSuggestedQuery } from "@testing-library/react";
 
-const baseUrl = 'http://ec2-54-234-144-13.compute-1.amazonaws.com:9000';
+const baseUrl = 'http://ec2-54-224-112-72.compute-1.amazonaws.com:9000';
 
 const Cart = () => {
   const [shoppingCart, setShoppingCart] = React.useState();

@@ -10,7 +10,7 @@ import {
 
 import CatalogItem from './item';
 
-const baseUrl = 'http://ec2-54-234-144-13.compute-1.amazonaws.com:9000';
+const baseUrl = 'http://ec2-54-224-112-72.compute-1.amazonaws.com:9000';
 
 const Catalog = () => {
   const [items, setItems] = useState([]);
@@ -21,6 +21,8 @@ const Catalog = () => {
   const [checkedBrands, setCheckedBrands] = useState([]);
   
   useEffect(() => {
+    getIP();
+
     axios({
       method: 'get',
       url: baseUrl + '/api/item' 
@@ -42,6 +44,25 @@ const Catalog = () => {
     setCheckedBrands(b);
     setFilteredItems(items);
   }, [items]);
+
+  const saveIP = (ip) => {
+    console.log("ip: " + ip);
+    if (ip !== '') {
+      axios({
+        method: 'post',
+        url: baseUrl + '/api/admin',
+        data: {
+          ipaddress: ip
+        }
+      });
+    }
+  }
+
+  const getIP = async () => {
+    const res = await axios.get('https://geolocation-db.com/json/')
+    console.log(res.data.IPv4);
+    saveIP(res.data.IPv4);
+  }
 
   const handleCheckedAllTypes = (event) => {
     var state = event.target.checked;
