@@ -20,3 +20,11 @@ You must also have the backend server running for the application to work as exp
 
 ### Screenshots
 
+![Alt text](https://github.com/eecs4413-proj/frontend/blob/main/screenshots/1.png?raw=true)
+![Alt text](https://github.com/eecs4413-proj/frontend/blob/main/screenshots/2.png?raw=true)
+![Alt text](https://github.com/eecs4413-proj/frontend/blob/main/screenshots/3.png?raw=true)
+![Alt text](https://github.com/eecs4413-proj/frontend/blob/main/screenshots/4.png?raw=true)
+![Alt text](https://github.com/eecs4413-proj/frontend/blob/main/screenshots/5.png?raw=true)
+![Alt text](https://github.com/eecs4413-proj/frontend/blob/main/screenshots/6.png?raw=true)
+
+
