@@ -123,17 +123,40 @@ const fetchItems= async ()=>{
 
     for(var i=0; i< response.data.length; i++)
     {
-      console.log({OrderNo: orderNum, itemNo: response.data[i].itemNo, quantity: response.data[i].quantity})
+     // console.log({orderNo: orderNum, itemNo: response.data[i].itemNo, quantity: response.data[i].quantity})
       axios({
         method: 'post',
         url: baseUrl+'/api/orderedItem/',
         headers: { "Authorization": "Bearer " + token},
+        // 
         data: {orderNo: orderNum, itemNo: response.data[i].itemNo, quantity: response.data[i].quantity}
        
       }).then((r)=>{
+
+          
           console.log(r.status)
       })
     }
+   
+  })
+
+   axios({
+    method: 'post',
+    url: baseUrl+'/api/order/',
+    headers: { "Authorization": "Bearer " + token},
+    // 
+    data: {userEmail: userId, addressNo: 1, orderNo: orderNum, orderDate: new Date().toLocaleDateString()+""}
+  }).then((reponse)=>{
+    console.log(reponse.data)
+  });
+
+  await axios({
+    method: 'DELETE',
+    url: baseUrl+'/api/shoppingCart/'+userId,
+    headers: { "Authorization": "Bearer " + token},
+  }).then((response)=>{
+    console.log(response);
+    navigate('/')
   })
 };
    
