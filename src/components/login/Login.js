@@ -5,7 +5,7 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 import axios from "axios";
 import {useNavigate} from "react-router-dom";
 
-const baseUrl = 'http://ec2-54-224-112-72.compute-1.amazonaws.com:9000';
+const baseUrl = 'http://localhost:9000';
 
 function Login() {
     /**

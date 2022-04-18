@@ -9,7 +9,8 @@ import TableRow from '@mui/material/TableRow';
 import Paper from '@mui/material/Paper';
 import axios from 'axios';
 
-const baseUrl = 'http://ec2-54-224-112-72.compute-1.amazonaws.com:9000';
+// const baseUrl = 'http://ec2-54-224-112-72.compute-1.amazonaws.com:9000';
+const baseUrl = 'http://localhost:9000';
 
 const StyledTableCell = styled(TableCell)(({ theme }) => ({
   [`&.${tableCellClasses.head}`]: {
