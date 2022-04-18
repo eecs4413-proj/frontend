@@ -25,7 +25,7 @@ import RemoveIcon from "@mui/icons-material/Remove";
 import RefreshIcon from '@mui/icons-material/Refresh';
 import useImage from './hooks/useImage'
 
-const baseUrl = 'http://ec2-54-224-112-72.compute-1.amazonaws.com:9000';
+const baseUrl = process.env.REACT_APP_BASE_URL;
 
 const modalStyle = {
   position: 'absolute',

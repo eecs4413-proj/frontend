@@ -18,7 +18,7 @@ import Paper from '@mui/material/Paper';
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
 
-const baseUrl = 'http://ec2-54-224-112-72.compute-1.amazonaws.com:9000';
+const baseUrl = process.env.REACT_APP_BASE_URL;
 
 const OrderReview = () => {
   const [shoppingCart, setShoppingCart] = React.useState();
