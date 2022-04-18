@@ -61,7 +61,6 @@ export default function AdminEventTable() {
               <TableHead>
                 <TableRow>
                   <StyledTableCell style = {{fontsize:50,fontWeight: 600}}>IP address</StyledTableCell>
-                  <StyledTableCell style = {{fontsize:50, fontWeight: 600}}>Event Type</StyledTableCell>
                 </TableRow>
               </TableHead>
               <TableBody>
@@ -70,7 +69,6 @@ export default function AdminEventTable() {
                     <StyledTableCell component="th" scope="row">
                       {row.ipAddress}
                     </StyledTableCell>
-                    <StyledTableCell>{row.eventType}</StyledTableCell>
                   </StyledTableRow>
                 ))}
               </TableBody>
